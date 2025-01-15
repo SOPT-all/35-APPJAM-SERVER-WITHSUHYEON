@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sopt.appjam.withsuhyeon.constant.Request;
+import sopt.appjam.withsuhyeon.constant.RequestInfo;
 
 @Entity
 @Getter
@@ -19,7 +19,7 @@ public class RequestEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "request_info")
-    private Request requestInfo;
+    private RequestInfo requestInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
@@ -27,7 +27,7 @@ public class RequestEntity {
 
     @Builder
     public RequestEntity(
-            Request requestInfo,
+            RequestInfo requestInfo,
             PostEntity postEntity
     ) {
         this.requestInfo = requestInfo;
