@@ -1,12 +1,14 @@
 package sopt.appjam.withsuhyeon.constant;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Request {
     PHOTO("photo", "사진 촬영"),
     CALL("call", "전화 통화"),
@@ -15,23 +17,9 @@ public enum Request {
     private final String key;
     private final String value;
 
-    Request(String key, String value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
     public static List<String> getRequestOption() {
         return Arrays.stream(Request.values())  // 모든 enum 값을 리스트로 가져옴
                 .map(Request::getValue)    // 각 enum의 value 매핑
                 .collect(Collectors.toList());
     }
-
 }

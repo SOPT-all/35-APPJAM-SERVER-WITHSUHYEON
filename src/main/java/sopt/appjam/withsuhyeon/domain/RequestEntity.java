@@ -10,12 +10,14 @@ import sopt.appjam.withsuhyeon.constant.Request;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "post_request")
 public class RequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "request_info")
     private Request requestInfo;
 
@@ -23,9 +25,11 @@ public class RequestEntity {
     @JoinColumn(name = "post_id")
     private PostEntity postEntity;
 
-
     @Builder
-    public RequestEntity(Request requestInfo, PostEntity postEntity) {
+    public RequestEntity(
+            Request requestInfo,
+            PostEntity postEntity
+    ) {
         this.requestInfo = requestInfo;
         this.postEntity = postEntity;
     }

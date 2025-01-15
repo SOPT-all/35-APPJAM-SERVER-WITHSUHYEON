@@ -1,5 +1,11 @@
 package sopt.appjam.withsuhyeon.constant;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Age {
     EARLY20("20 ~ 24"),
     LATE20("25 ~ 29"),
@@ -8,14 +14,4 @@ public enum Age {
     FORTY("40세 이상");
 
     private final String value;
-
-    Age(final String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-
 }

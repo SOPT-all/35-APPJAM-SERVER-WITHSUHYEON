@@ -1,5 +1,11 @@
 package sopt.appjam.withsuhyeon.constant;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Category {
     AIRPORT("공항"),
     LIBRARY("도서관"),
@@ -19,12 +25,4 @@ public enum Category {
     OTHERS("기타");
 
     private final String value;
-
-    Category(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }

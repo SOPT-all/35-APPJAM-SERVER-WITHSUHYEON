@@ -1,5 +1,11 @@
 package sopt.appjam.withsuhyeon.constant;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Region {
     // 서울 지역
     SEOUL_GANGNAM("서울", "강남/역삼/삼성", "강남구"),
@@ -62,24 +68,6 @@ public enum Region {
     private final String province;  // 도/특별시
     private final String area;      // 지역 분류
     private final String districts; // 시/군/구
-
-    Region(String province, String area, String districts) {
-        this.province = province;
-        this.area = area;
-        this.districts = districts;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public String getDistricts() {
-        return districts;
-    }
 }
 
 
