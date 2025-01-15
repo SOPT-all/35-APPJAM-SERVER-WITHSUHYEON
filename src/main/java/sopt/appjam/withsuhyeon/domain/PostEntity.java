@@ -26,7 +26,7 @@ public class PostEntity {
     private Boolean gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "area", nullable = false)
+    @Column(name = "region", nullable = false)
     @NotNull(message = "관심지역은 필수로 입력해야 합니다.")
     private Region region;
 
@@ -74,7 +74,6 @@ public class PostEntity {
         this.price = price;
         this.title = title;
         this.content = content;
-
         this.matching = matching;
         this.userEntity = userEntity;
     }
