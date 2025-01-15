@@ -47,7 +47,7 @@ public class UserEntity {
     private Profile image;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "area", nullable = false)
+    @Column(name = "region", nullable = false)
     @NotNull(message = "관심 지역은 필수로 입력해야 합니다.")
     private Region region;
 
