@@ -27,7 +27,8 @@ public class PostEntity extends BaseTimeEntity {
     @NotNull(message = "성별은 필수로 입력해야 합니다.")
     private Boolean gender;
 
-    @Column(name = "age")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "age", nullable = false)
     @NotNull(message = "나이대는 필수로 입력해야 합니다.")
     private Age age;
 
