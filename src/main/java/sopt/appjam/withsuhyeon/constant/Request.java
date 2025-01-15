@@ -10,11 +10,10 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Request {
-    PHOTO("photo", "사진 촬영"),
-    CALL("call", "전화 통화"),
-    VIDEO("video", "영상 통화");
+    PHOTO("사진 촬영"),
+    CALL("전화 통화"),
+    VIDEO("영상 통화");
 
-    private final String key;
     private final String value;
 
     public static List<String> getRequestOption() {
