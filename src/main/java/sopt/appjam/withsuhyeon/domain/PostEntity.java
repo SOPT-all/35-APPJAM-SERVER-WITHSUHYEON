@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sopt.appjam.withsuhyeon.constant.Region;
+import sopt.appjam.withsuhyeon.global.base.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "post")
-public class PostEntity {
+public class PostEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -46,9 +47,6 @@ public class PostEntity {
     @NotNull(message = "설명은 필수로 입력해야 합니다.")
     @Size(max = 200)
     private String content;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     @Column(name = "matching")
     private Boolean matching;
