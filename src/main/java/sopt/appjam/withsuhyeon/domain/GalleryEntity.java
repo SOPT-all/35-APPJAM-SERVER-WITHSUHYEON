@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sopt.appjam.withsuhyeon.constant.Category;
 import sopt.appjam.withsuhyeon.global.base.BaseTimeEntity;
 
 @Entity
@@ -28,10 +29,12 @@ public class GalleryEntity extends BaseTimeEntity {
     @Size(max = 30)
     private String title;
 
-    @Column(name = "content", nullable = false)
-    @NotNull(message = "설명은 필수로 입력해야 합니다.")
+    @Column(name = "content")
     @Size(max = 200)
     private String content;
+
+    @Column(name = "category")
+    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -42,11 +45,13 @@ public class GalleryEntity extends BaseTimeEntity {
             String imageUrl,
             String title,
             String content,
+            Category category,
             UserEntity userEntity
     ) {
         this.imageUrl = imageUrl;
         this.title = title;
         this.content = content;
+        this.category = category;
         this.userEntity = userEntity;
     }
 }

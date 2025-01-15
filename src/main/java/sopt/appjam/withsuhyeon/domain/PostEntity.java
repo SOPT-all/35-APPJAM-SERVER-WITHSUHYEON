@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sopt.appjam.withsuhyeon.constant.Age;
 import sopt.appjam.withsuhyeon.constant.Region;
 import sopt.appjam.withsuhyeon.global.base.BaseTimeEntity;
 
@@ -25,6 +26,10 @@ public class PostEntity extends BaseTimeEntity {
     @Column(name = "gender", nullable = false)
     @NotNull(message = "성별은 필수로 입력해야 합니다.")
     private Boolean gender;
+
+    @Column(name = "age")
+    @NotNull(message = "나이대는 필수로 입력해야 합니다.")
+    private Age age;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
@@ -58,6 +63,7 @@ public class PostEntity extends BaseTimeEntity {
     @Builder
     public PostEntity(
             boolean gender,
+            Age age,
             Region region,
             LocalDateTime date,
             Integer price,
@@ -67,6 +73,7 @@ public class PostEntity extends BaseTimeEntity {
             UserEntity userEntity
     ) {
         this.gender = gender;
+        this.age = age;
         this.region = region;
         this.date = date;
         this.price = price;
