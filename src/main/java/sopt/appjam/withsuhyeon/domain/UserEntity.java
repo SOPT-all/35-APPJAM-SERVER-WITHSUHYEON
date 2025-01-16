@@ -46,7 +46,7 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "image", nullable = false)
     @NotNull(message = "프로필 이미지는 필수로 입력해야 합니다.")
-    private ProfileImage image;
+    private ProfileImage profileImage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
@@ -59,14 +59,14 @@ public class UserEntity {
             String nickname,
             Integer birthYear,
             Boolean gender,
-            ProfileImage image,
+            ProfileImage profileImage,
             Region region
     ) {
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.birthYear = birthYear;
         this.gender = gender;
-        this.image = image;
+        this.profileImage = profileImage;
         this.region = region;
     }
 
