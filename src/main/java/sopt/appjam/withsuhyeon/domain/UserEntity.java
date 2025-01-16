@@ -8,7 +8,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sopt.appjam.withsuhyeon.constant.Profile;
+import org.hibernate.annotations.DynamicUpdate;
+import sopt.appjam.withsuhyeon.constant.ProfileImage;
 import sopt.appjam.withsuhyeon.constant.Region;
 
 
@@ -16,6 +17,7 @@ import sopt.appjam.withsuhyeon.constant.Region;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
+@DynamicUpdate
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +46,7 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "image", nullable = false)
     @NotNull(message = "프로필 이미지는 필수로 입력해야 합니다.")
-    private Profile image;
+    private ProfileImage profileImage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
@@ -57,14 +59,19 @@ public class UserEntity {
             String nickname,
             Integer birthYear,
             Boolean gender,
-            Profile image,
+            ProfileImage profileImage,
             Region region
     ) {
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.birthYear = birthYear;
         this.gender = gender;
-        this.image = image;
+        this.profileImage = profileImage;
         this.region = region;
+    }
+
+    // 관심 지역 업데이트 메서드 추가
+    public void updateRegion(Region newRegion) {
+        this.region = newRegion;
     }
 }
