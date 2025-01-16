@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sopt.appjam.withsuhyeon.constant.Profile;
+import sopt.appjam.withsuhyeon.constant.ProfileImage;
 import sopt.appjam.withsuhyeon.constant.Region;
 
 
@@ -44,7 +44,7 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "image", nullable = false)
     @NotNull(message = "프로필 이미지는 필수로 입력해야 합니다.")
-    private Profile image;
+    private ProfileImage image;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
@@ -57,7 +57,7 @@ public class UserEntity {
             String nickname,
             Integer birthYear,
             Boolean gender,
-            Profile image,
+            ProfileImage image,
             Region region
     ) {
         this.phoneNumber = phoneNumber;
