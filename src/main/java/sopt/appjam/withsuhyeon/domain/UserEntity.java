@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import sopt.appjam.withsuhyeon.constant.ProfileImage;
 import sopt.appjam.withsuhyeon.constant.Region;
 
@@ -16,6 +17,7 @@ import sopt.appjam.withsuhyeon.constant.Region;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
+@DynamicUpdate
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,5 +68,10 @@ public class UserEntity {
         this.gender = gender;
         this.image = image;
         this.region = region;
+    }
+
+    // 관심 지역 업데이트 메서드 추가
+    public void updateRegion(Region newRegion) {
+        this.region = newRegion;
     }
 }
