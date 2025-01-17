@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sopt.appjam.withsuhyeon.domain.BlockEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
 import sopt.appjam.withsuhyeon.dto.auth.req.SignupRequestDto;
+import sopt.appjam.withsuhyeon.dto.user.req.BlockNumberListResponseDto;
 import sopt.appjam.withsuhyeon.dto.user.req.BlockNumberRequestDto;
 import sopt.appjam.withsuhyeon.exception.BlockErrorCode;
 import sopt.appjam.withsuhyeon.exception.UserErrorCode;
@@ -14,13 +15,16 @@ import sopt.appjam.withsuhyeon.global.exception.BaseException;
 import sopt.appjam.withsuhyeon.repository.BlockRepository;
 import sopt.appjam.withsuhyeon.repository.UserRepository;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final BlockRepository blockRepository;
-
 
     @Transactional
     public UserEntity createUser(SignupRequestDto signupRequestDto) {
@@ -67,6 +71,21 @@ public class UserService {
                 .orElseThrow(()-> BaseException.type(UserErrorCode.USER_NOT_FOUND));
 
         blockRepository.deleteByPhoneNumberAndUserEntity(phoneNumber, userEntity1);
+    }
+
+    @Transactional(readOnly = true)
+    public BlockNumberListResponseDto getBlockNumberList(Long userId) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_FOUND));
+
+        List<BlockEntity> blockEntityList = blockRepository.findByUserEntity(userEntity);
+        List<String> phoneNumbers = blockEntityList.stream()
+                .map(BlockEntity::getPhoneNumber)
+                .collect(Collectors.toList());
+        //최신 등록순
+        Collections.reverse(phoneNumbers);
+
+        return new BlockNumberListResponseDto(userEntity.getNickname(), phoneNumbers);
     }
 
     // 전화번호 형식 검증
