@@ -8,10 +8,11 @@ import sopt.appjam.withsuhyeon.domain.BlockEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
 import sopt.appjam.withsuhyeon.dto.auth.req.SignupRequestDto;
 import sopt.appjam.withsuhyeon.dto.user.req.BlockNumberRequestDto;
+import sopt.appjam.withsuhyeon.exception.BlockErrorCode;
+import sopt.appjam.withsuhyeon.exception.UserErrorCode;
+import sopt.appjam.withsuhyeon.global.exception.BaseException;
 import sopt.appjam.withsuhyeon.repository.BlockRepository;
 import sopt.appjam.withsuhyeon.repository.UserRepository;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,7 +24,6 @@ public class UserService {
 
     @Transactional
     public UserEntity createUser(SignupRequestDto signupRequestDto) {
-
         UserEntity userEntity = UserEntity.builder()
                 .phoneNumber(signupRequestDto.phoneNumber())
                 .nickname(signupRequestDto.nickname())
@@ -37,12 +37,18 @@ public class UserService {
     }
 
     @Transactional
-    public BlockEntity createBlockNumber(BlockNumberRequestDto blockNumberRequestDto, final String blockerId) {
+    public BlockEntity createBlockNumber(BlockNumberRequestDto blockNumberRequestDto, final Long blockerId) {
         //blockerId로 UserEntity 불러오기
-        UserEntity userEntity = userRepository.findById(Long.parseLong(blockerId))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 blockerId입니다."));
+        UserEntity userEntity = userRepository.findById(blockerId)
+                .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_FOUND));
 
-        //자기 자신의 번호는 차단할 수 없게 ?
+        validatePhoneNumberFormat(blockNumberRequestDto.phoneNumber());
+        validateNotOwnPhoneNumber(blockerId, blockNumberRequestDto.phoneNumber());
+
+        //이미 등록된 경우
+        if(blockRepository.existsByPhoneNumberAndUserEntity_Id(blockNumberRequestDto.phoneNumber(), userEntity.getId())) {
+            throw BaseException.type(BlockErrorCode.BLOCK_ALREADY_EXISTS_BAD_REQUEST);
+        }
         BlockEntity blockEntity = BlockEntity.builder()
                 .phoneNumber(blockNumberRequestDto.phoneNumber())
                 .userEntity(userEntity)
@@ -53,14 +59,31 @@ public class UserService {
 
     @Transactional
     public void removeBlockNumber(final Long blockerId, final String phoneNumber) {
-
-        Boolean isBlocked = blockRepository.existsByPhoneNumberAndUserEntity(blockerId, phoneNumber);
-        if(!isBlocked) {
-            throw new IllegalArgumentException("사용자가 해당 전화번호를 차단한 기록이 없습니다.");
+        validatePhoneNumberFormat(phoneNumber);
+        if(!blockRepository.existsByPhoneNumberAndUserEntity_Id(phoneNumber, blockerId)) {
+            throw BaseException.type(BlockErrorCode.BLOCK_NOT_FOUND);
         }
-        UserEntity userEntity = userRepository.findById(blockerId)
-                .orElseThrow();
+        UserEntity userEntity1 = userRepository.findById(blockerId)
+                .orElseThrow(()-> BaseException.type(UserErrorCode.USER_NOT_FOUND));
 
-        blockRepository.deleteByPhoneNumberAndUserEntity(phoneNumber, userEntity);
+        blockRepository.deleteByPhoneNumberAndUserEntity(phoneNumber, userEntity1);
+    }
+
+    // 전화번호 형식 검증
+    private void validatePhoneNumberFormat(String phoneNumber) {
+        String regex = "^01([0|1|6|7|8|9])\\d{3,4}\\d{4}$";
+        if (!phoneNumber.matches(regex)) {
+            throw BaseException.type(BlockErrorCode.BLOCK_FORMAT_BAD_REQUEST);
+        }
+    }
+
+    //자기 번호인지 확인
+    private void validateNotOwnPhoneNumber(Long userId, String phoneNumber) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_FOUND));
+
+        if (userEntity.getPhoneNumber().equals(phoneNumber)) {
+            throw BaseException.type(BlockErrorCode.BLOCK_SELF_CALL_BAD_REQUEST);
+        }
     }
 }
