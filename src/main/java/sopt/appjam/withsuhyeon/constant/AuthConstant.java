@@ -6,8 +6,8 @@ public class AuthConstant {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String ANONYMOUS_USER = "anonymousUser";
     public static final String[] AUTH_WHITELIST = {
-            "/api/vi/auth/signup",
-            "/api/vi/auth/signin",
+            "/api/v1/auth/signup",
+            "/api/v1/auth/signin",
     };
     private AuthConstant() {
     }
