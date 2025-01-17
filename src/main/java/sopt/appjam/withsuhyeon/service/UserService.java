@@ -11,8 +11,6 @@ import sopt.appjam.withsuhyeon.dto.user.req.BlockNumberRequestDto;
 import sopt.appjam.withsuhyeon.repository.BlockRepository;
 import sopt.appjam.withsuhyeon.repository.UserRepository;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -40,13 +38,11 @@ public class UserService {
 
     @Transactional
     public BlockEntity createBlockNumber(BlockNumberRequestDto blockNumberRequestDto, final String blockerId) {
-
         //blockerId로 UserEntity 불러오기
         UserEntity userEntity = userRepository.findById(Long.parseLong(blockerId))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 blockerId입니다."));
 
         //자기 자신의 번호는 차단할 수 없게 ?
-
         BlockEntity blockEntity = BlockEntity.builder()
                 .phoneNumber(blockNumberRequestDto.phoneNumber())
                 .userEntity(userEntity)
@@ -58,9 +54,14 @@ public class UserService {
     @Transactional
     public void removeBlockNumber(final Long blockerId, final String phoneNumber) {
         Optional<BlockEntity> blockEntity = blockRepository.findByUserEntityIdAndPhoneNumber(blockerId, phoneNumber);
+
         if(blockEntity.isEmpty()) {
             throw new IllegalArgumentException("사용자가 해당 전화번호를 차단한 기록이 없습니다.");
         }
-        blockRepository.deleteByPhoneNumber(blockEntity.get().getPhoneNumber());
+
+        UserEntity userEntity = userRepository.findById(blockerId)
+                .orElseThrow();
+
+        blockRepository.deleteByPhoneNumberAndUserEntity(phoneNumber, userEntity);
     }
 }
