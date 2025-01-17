@@ -15,7 +15,7 @@ public class UserController {
 
     @PostMapping("/blocks")
     public ResponseEntity<Void> createBlockNumber(
-            @RequestHeader("Authorization") String blockerId,
+            @RequestHeader("Authorization") Long blockerId,
             @RequestBody BlockNumberRequestDto blockNumberRequestDto
     ) {
         userService.createBlockNumber(blockNumberRequestDto, blockerId);
