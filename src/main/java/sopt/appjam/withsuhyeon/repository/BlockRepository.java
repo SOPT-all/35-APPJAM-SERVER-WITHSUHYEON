@@ -7,7 +7,7 @@ import sopt.appjam.withsuhyeon.domain.UserEntity;
 import java.util.Optional;
 
 public interface BlockRepository extends JpaRepository<BlockEntity, Long> {
-    Optional<BlockEntity> findByUserEntityIdAndPhoneNumber(Long userId, String phoneNumber);
+    Boolean existsByPhoneNumberAndUserEntity(Long userId, String phoneNumber);
 
     void deleteByPhoneNumberAndUserEntity(String phoneNumber, UserEntity userEntity);
 }

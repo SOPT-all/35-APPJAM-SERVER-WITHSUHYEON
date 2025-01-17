@@ -53,12 +53,11 @@ public class UserService {
 
     @Transactional
     public void removeBlockNumber(final Long blockerId, final String phoneNumber) {
-        Optional<BlockEntity> blockEntity = blockRepository.findByUserEntityIdAndPhoneNumber(blockerId, phoneNumber);
 
-        if(blockEntity.isEmpty()) {
+        Boolean isBlocked = blockRepository.existsByPhoneNumberAndUserEntity(blockerId, phoneNumber);
+        if(!isBlocked) {
             throw new IllegalArgumentException("사용자가 해당 전화번호를 차단한 기록이 없습니다.");
         }
-
         UserEntity userEntity = userRepository.findById(blockerId)
                 .orElseThrow();
 
