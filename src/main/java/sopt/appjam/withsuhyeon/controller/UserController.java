@@ -3,8 +3,9 @@ package sopt.appjam.withsuhyeon.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sopt.appjam.withsuhyeon.dto.auth.req.SignupRequestDto;
+import sopt.appjam.withsuhyeon.dto.user.req.BlockNumberListResponseDto;
 import sopt.appjam.withsuhyeon.dto.user.req.BlockNumberRequestDto;
+import sopt.appjam.withsuhyeon.global.base.BaseResponse;
 import sopt.appjam.withsuhyeon.service.UserService;
 
 @RestController
@@ -29,5 +30,13 @@ public class UserController {
     ) {
         userService.removeBlockNumber(blockerId, phoneNumber);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/blocks")
+    public ResponseEntity<BlockNumberListResponseDto> getBlockNumbers(
+            @RequestHeader("Authorization") Long userId
+    ) {
+        BlockNumberListResponseDto blockNumberListResponse = userService.getBlockNumberList(userId);
+        return ResponseEntity.ok(blockNumberListResponse);
     }
 }
