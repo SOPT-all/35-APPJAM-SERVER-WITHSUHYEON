@@ -1,17 +1,14 @@
 package sopt.appjam.withsuhyeon.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sopt.appjam.withsuhyeon.constant.Age;
 import sopt.appjam.withsuhyeon.constant.Region;
 import sopt.appjam.withsuhyeon.constant.RequestInfo;
-import sopt.appjam.withsuhyeon.domain.BlockEntity;
 import sopt.appjam.withsuhyeon.domain.PostEntity;
 import sopt.appjam.withsuhyeon.domain.RequestEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
-import sopt.appjam.withsuhyeon.dto.block.res.BlockNumberListResponseDto;
 import sopt.appjam.withsuhyeon.dto.post.req.PostRequestDto;
 import sopt.appjam.withsuhyeon.dto.post.res.PostListResponseDto;
 import sopt.appjam.withsuhyeon.exception.PostErrorCode;
@@ -22,7 +19,6 @@ import sopt.appjam.withsuhyeon.repository.RequestRepository;
 import sopt.appjam.withsuhyeon.repository.UserRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +26,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -73,10 +68,8 @@ public class PostService {
 
             requestRepository.save(requestEntity);
         }
-
         return postEntity;
     }
-
 
     @Transactional(readOnly = true)
     public PostListResponseDto getPostList(final Long userId, final String region, final String date) {
@@ -99,8 +92,6 @@ public class PostService {
             
             // 1. 지역과 날짜를 모두 선택하는 경우
             if(!date.equals("all")) {
-                log.info(region, "2");
-                log.info(date, "2");
                 LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
                 filteredPostList = filterByDate(postList, parsedDate);
             } else {
@@ -109,16 +100,12 @@ public class PostService {
             }
             // 3. 날짜만 선택하는 경우
         } else if(!date.equals("all")) {
-            log.info(region, "3");
-            log.info(date, "3");
             postList = postRepository.findAllByRegion(userEntity.getRegion());
             LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
             filteredPostList = filterByDate(postList, parsedDate);
             
             // 4. 아무것도 선택하지 않는 경우
         } else {
-            log.info(region, "4");
-            log.info(date, "4");
             filteredPostList = postRepository.findAllByRegion(userEntity.getRegion());
         }
         
