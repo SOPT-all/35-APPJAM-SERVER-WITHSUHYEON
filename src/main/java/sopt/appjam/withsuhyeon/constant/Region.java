@@ -3,6 +3,8 @@ package sopt.appjam.withsuhyeon.constant;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import sopt.appjam.withsuhyeon.exception.PostErrorCode;
+import sopt.appjam.withsuhyeon.global.exception.BaseException;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -77,4 +79,13 @@ public enum Region {
     private final String key;
     private final String location;  // 도/특별시
     private final String subLocation; // 지역 분류
+
+    public static Region fromValue(String value) {
+        for (Region region : Region.values()) {
+            if (region.getSubLocation().equals(value)) {
+                return region;
+            }
+        }
+        throw BaseException.type(PostErrorCode.POST_REGION_INVALID_INPUT);
+    }
 }

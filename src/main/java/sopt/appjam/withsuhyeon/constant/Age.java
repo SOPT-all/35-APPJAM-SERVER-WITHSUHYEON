@@ -3,6 +3,8 @@ package sopt.appjam.withsuhyeon.constant;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import sopt.appjam.withsuhyeon.exception.PostErrorCode;
+import sopt.appjam.withsuhyeon.global.exception.BaseException;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -15,4 +17,13 @@ public enum Age {
 
     private final String key;
     private final String value;
+
+    public static Age fromValue(String value) {
+        for (Age age : Age.values()) {
+            if (age.getValue().equals(value)) {
+                return age;
+            }
+        }
+        throw BaseException.type(PostErrorCode.POST_AGE_INVALID_INPUT);
+    }
 }
