@@ -10,7 +10,7 @@ public record ChatRoomResponse(
         String ownerChatRoomId,
         String peerChatRoomId,
         Long postId,
-        Long connectorId,
+        Long chatOwnerId,
         Long chatPeerId,
         String chatPeerNickname,
         String lastChatMessage,
