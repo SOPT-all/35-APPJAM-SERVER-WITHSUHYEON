@@ -8,6 +8,7 @@ public class AuthConstant {
     public static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/signup",
             "/api/v1/auth/signin",
+            "/chat/**" // WebSocket 경로 추가
     };
     private AuthConstant() {
     }
