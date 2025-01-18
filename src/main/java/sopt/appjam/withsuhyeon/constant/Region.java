@@ -9,6 +9,7 @@ import lombok.Getter;
 public enum Region {
     // 전체
     ALL("ALL", "전국", "전국 전체"),
+
     // 서울 지역
     SEOUL_ALL("SEOUL_ALL", "서울", "서울 전체"),
     SEOUL_GANGNAM("SEOUL_GANGNAM", "서울", "강남/역삼/삼성"),
