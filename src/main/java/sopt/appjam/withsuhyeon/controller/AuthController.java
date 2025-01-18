@@ -14,7 +14,7 @@ import sopt.appjam.withsuhyeon.service.AuthService;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public ResponseEntity<Void> signUp(
             @RequestBody SignUpRequestDto signUpRequestDto
     ) {
@@ -23,7 +23,7 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/signin")
     public ResponseEntity<JwtTokensDto> signIn(
             @RequestBody SignInRequestDto signInRequestDto
     ) {
