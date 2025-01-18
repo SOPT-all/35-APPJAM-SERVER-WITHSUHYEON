@@ -1,4 +1,4 @@
-package sopt.appjam.withsuhyeon.dto.user.req;
+package sopt.appjam.withsuhyeon.dto.block.req;
 
 public record BlockNumberRequestDto(
         String phoneNumber

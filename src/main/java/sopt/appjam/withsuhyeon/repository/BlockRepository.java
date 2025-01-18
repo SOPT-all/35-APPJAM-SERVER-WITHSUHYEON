@@ -5,10 +5,9 @@ import sopt.appjam.withsuhyeon.domain.BlockEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BlockRepository extends JpaRepository<BlockEntity, Long> {
-    Boolean existsByPhoneNumberAndUserEntity_Id(String phoneNumber, Long userId);
+    Boolean existsByPhoneNumberAndUserEntity(String phoneNumber, UserEntity userEntity);
 
     void deleteByPhoneNumberAndUserEntity(String phoneNumber, UserEntity userEntity);
 
