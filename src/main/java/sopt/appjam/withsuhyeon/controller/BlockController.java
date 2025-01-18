@@ -22,6 +22,14 @@ public class BlockController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/blocks")
+    public ResponseEntity<BlockNumberListResponseDto> getBlockNumbers(
+            @RequestHeader("Authorization") Long userId
+    ) {
+        BlockNumberListResponseDto blockNumberListResponse = blockService.getBlockNumberList(userId);
+        return ResponseEntity.ok(blockNumberListResponse);
+    }
+
     @DeleteMapping("/blocks")
     public ResponseEntity<Void> deleteBlockNumber(
             @RequestHeader("Authorization") Long blockerId,
@@ -29,13 +37,5 @@ public class BlockController {
     ) {
         blockService.removeBlockNumber(blockerId, phoneNumber);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/blocks")
-    public ResponseEntity<BlockNumberListResponseDto> getBlockNumbers(
-            @RequestHeader("Authorization") Long userId
-    ) {
-        BlockNumberListResponseDto blockNumberListResponse = blockService.getBlockNumberList(userId);
-        return ResponseEntity.ok(blockNumberListResponse);
     }
 }
