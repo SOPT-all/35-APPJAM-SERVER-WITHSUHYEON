@@ -46,19 +46,6 @@ public class BlockService {
         return blockRepository.save(blockEntity);
     }
 
-    @Transactional
-    public void removeBlockNumber(final Long blockerId, final String phoneNumber) {
-        validatePhoneNumberFormat(phoneNumber);
-
-        UserEntity userEntity = userRepository.findById(blockerId)
-                .orElseThrow(()-> BaseException.type(UserErrorCode.USER_NOT_FOUND));
-
-        if(!blockRepository.existsByPhoneNumberAndUserEntity(phoneNumber, userEntity)) {
-            throw BaseException.type(BlockErrorCode.BLOCK_NOT_FOUND);
-        }
-        blockRepository.deleteByPhoneNumberAndUserEntity(phoneNumber, userEntity);
-    }
-
     @Transactional(readOnly = true)
     public BlockNumberListResponseDto getBlockNumberList(Long userId) {
         UserEntity userEntity = userRepository.findById(userId)
@@ -72,6 +59,19 @@ public class BlockService {
         Collections.reverse(phoneNumbers);
 
         return new BlockNumberListResponseDto(userEntity.getNickname(), phoneNumbers);
+    }
+
+    @Transactional
+    public void removeBlockNumber(final Long blockerId, final String phoneNumber) {
+        validatePhoneNumberFormat(phoneNumber);
+
+        UserEntity userEntity = userRepository.findById(blockerId)
+                .orElseThrow(()-> BaseException.type(UserErrorCode.USER_NOT_FOUND));
+
+        if(!blockRepository.existsByPhoneNumberAndUserEntity(phoneNumber, userEntity)) {
+            throw BaseException.type(BlockErrorCode.BLOCK_NOT_FOUND);
+        }
+        blockRepository.deleteByPhoneNumberAndUserEntity(phoneNumber, userEntity);
     }
 
     // 전화번호 형식 검증
