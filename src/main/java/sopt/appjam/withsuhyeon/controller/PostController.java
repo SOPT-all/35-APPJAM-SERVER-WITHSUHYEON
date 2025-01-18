@@ -1,15 +1,16 @@
 package sopt.appjam.withsuhyeon.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sopt.appjam.withsuhyeon.anotation.UserId;
-import sopt.appjam.withsuhyeon.dto.block.req.BlockNumberRequestDto;
 import sopt.appjam.withsuhyeon.dto.post.req.PostRequestDto;
+import sopt.appjam.withsuhyeon.dto.post.res.PostListResponseDto;
+import sopt.appjam.withsuhyeon.service.BlockService;
 import sopt.appjam.withsuhyeon.service.PostService;
+
+import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +25,16 @@ public class PostController {
     ) {
         postService.createPostItem(userId, postRequestDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("")
+    public ResponseEntity<PostListResponseDto> getPosts(
+            @UserId Long userId,
+            @RequestParam(value = "region", required = false) String region,
+            @RequestParam(value = "date", required = false, defaultValue = "all") String date
+
+    ) {
+        PostListResponseDto postListResponseDto = postService.getPostList(userId, region, date);
+        return ResponseEntity.ok(postListResponseDto);
     }
 }
