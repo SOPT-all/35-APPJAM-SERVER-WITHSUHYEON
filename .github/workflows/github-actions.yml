@@ -63,7 +63,7 @@ jobs:
       - name: Docker build & push
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/amd64 \
             --push \
             -t ${{ secrets.DOCKER_USERNAME }}/with-suhyeon .
 
@@ -72,7 +72,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_PROD }}
-          username: ubuntu
+          username: root
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             sudo docker ps -q --filter "ancestor=${{ secrets.DOCKER_USERNAME }}/with-suhyeon" | xargs -r sudo docker stop
