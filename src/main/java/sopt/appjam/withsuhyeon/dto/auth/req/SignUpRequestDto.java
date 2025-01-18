@@ -1,10 +1,9 @@
 package sopt.appjam.withsuhyeon.dto.auth.req;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import sopt.appjam.withsuhyeon.constant.ProfileImage;
 import sopt.appjam.withsuhyeon.constant.Region;
 
-public record SignupRequestDto(
+public record SignUpRequestDto(
         String phoneNumber,
 
         String nickname,
