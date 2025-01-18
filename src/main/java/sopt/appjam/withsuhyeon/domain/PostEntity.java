@@ -2,11 +2,11 @@ package sopt.appjam.withsuhyeon.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import sopt.appjam.withsuhyeon.constant.Age;
 import sopt.appjam.withsuhyeon.constant.Region;
 import sopt.appjam.withsuhyeon.global.base.BaseTimeEntity;
@@ -41,17 +41,17 @@ public class PostEntity extends BaseTimeEntity {
     @NotNull(message = "날짜 및 시간은 필수로 입력해야 합니다.")
     private LocalDateTime date;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Integer price;
 
     @Column(name = "title", nullable = false)
     @NotNull(message = "제목은 필수로 입력해야 합니다.")
-    @Size(max = 30)
+    @Length(max = 30)
     private String title;
 
     @Column(name = "content", nullable = false)
     @NotNull(message = "설명은 필수로 입력해야 합니다.")
-    @Size(max = 200)
+    @Length(max = 200)
     private String content;
 
     @Column(name = "matching")
