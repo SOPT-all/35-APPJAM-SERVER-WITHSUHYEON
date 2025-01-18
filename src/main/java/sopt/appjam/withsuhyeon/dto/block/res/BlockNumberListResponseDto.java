@@ -1,4 +1,4 @@
-package sopt.appjam.withsuhyeon.dto.user.req;
+package sopt.appjam.withsuhyeon.dto.block.res;
 
 import java.util.List;
 
