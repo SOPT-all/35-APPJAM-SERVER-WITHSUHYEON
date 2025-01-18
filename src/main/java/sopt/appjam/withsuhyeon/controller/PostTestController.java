@@ -15,14 +15,14 @@ import sopt.appjam.withsuhyeon.service.PostTestService;
 public class PostTestController {
     private final PostTestService postTestService;
 
-    @GetMapping("/api/vi/test/posts")
+    @GetMapping("/api/v1/test/posts")
     public ResponseEntity<PostsResponse> getAllPosts(
             @UserId Long userId
     ) {
         return ResponseEntity.ok(postTestService.getAllPost());
     }
 
-    @GetMapping("/api/vi/test/posts/{postId}")
+    @GetMapping("/api/v1/test/posts/{postId}")
     public ResponseEntity<PostDetailResponse> getPostDetail(
             @UserId Long userId,
             @PathVariable Long postId
