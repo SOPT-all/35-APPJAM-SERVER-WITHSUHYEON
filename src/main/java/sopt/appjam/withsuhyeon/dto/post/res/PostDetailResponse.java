@@ -1,12 +1,18 @@
 package sopt.appjam.withsuhyeon.dto.post.res;
 
+import lombok.Builder;
+
+@Builder
 public record PostDetailResponse(
-    Long postId,
-    Long connectorId,
-    Long writerId,
-    String nickname,
-    String title,
-    String content,
-    PostChatRoomInfoResponse chatRoomInfo
+        String title,
+        String content,
+        String nickname,
+        String createdAt,
+        String profileImage,
+        Integer price,
+        Boolean owner,
+        Boolean matching,
+        PostDetailInfo postDetailInfo,
+        ChatRoomInfoPost chatRoomInfoPost
 ){
 }

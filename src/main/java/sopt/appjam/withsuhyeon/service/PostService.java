@@ -10,6 +10,9 @@ import sopt.appjam.withsuhyeon.domain.PostEntity;
 import sopt.appjam.withsuhyeon.domain.RequestEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
 import sopt.appjam.withsuhyeon.dto.post.req.PostRequestDto;
+import sopt.appjam.withsuhyeon.dto.post.res.ChatRoomInfoPost;
+import sopt.appjam.withsuhyeon.dto.post.res.PostDetailInfo;
+import sopt.appjam.withsuhyeon.dto.post.res.PostDetailResponse;
 import sopt.appjam.withsuhyeon.dto.post.res.PostListResponseDto;
 import sopt.appjam.withsuhyeon.exception.PostErrorCode;
 import sopt.appjam.withsuhyeon.exception.UserErrorCode;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService {
+    private final ChatRoomService chatRoomService;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final RequestRepository requestRepository;
@@ -129,6 +133,49 @@ public class PostService {
         List<String> days = getDaysFilterList();
 
         return PostListResponseDto.of(userEntity.getRegion().getSubLocation(), days, postResponseList);
+    }
+
+    @Transactional(readOnly = true)
+    public PostDetailResponse getPostDetail(final Long userId, final Long postId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_FOUND));
+        PostEntity post = postRepository.findById(postId)
+                .orElseThrow(() -> BaseException.type(PostErrorCode.POST_NOT_FOUND));
+
+        DateTimeFormatter postWriteDateFormatter = DateTimeFormatter.ofPattern("M월 d일", Locale.KOREAN);
+        DateTimeFormatter findDateFormatter = DateTimeFormatter.ofPattern("M월 d일 (E) a h시 mm분", Locale.KOREAN);
+
+        List<RequestEntity> requestEntities = requestRepository.findByPostEntity(post);
+        List<String> requests = requestEntities.stream().map(
+                requestEntity -> requestEntity.getRequestInfo().getValue()
+        ).toList();
+
+        return PostDetailResponse.builder()
+                .title(post.getTitle())
+                .content(post.getContent())
+                .nickname(post.getUserEntity().getNickname())
+                .createdAt(post.getCreatedDate().format(postWriteDateFormatter))
+                .profileImage(post.getUserEntity().getProfileImage().getValue())
+                .price(post.getPrice())
+                .owner(user.equals(post.getUserEntity()))
+                .matching(false) // 이후 리팩터링 필요
+                .postDetailInfo(
+                        PostDetailInfo.builder()
+                                .region(post.getRegion().getSubLocation())
+                                .gender(post.getGender())
+                                .age(post.getAge().getValue().replace(" ", ""))
+                                .date(post.getDate().format(findDateFormatter))
+                                .requests(requests).build()
+                )
+                .chatRoomInfoPost(
+                        ChatRoomInfoPost.builder()
+                                .postId(post.getId())
+                                .ownerId(user.getId())
+                                .writerId(post.getUserEntity().getId())
+                                .ownerChatRoomId(chatRoomService.getOwnerChatRoomIdInPost(post.getId(), user.getId(), post.getUserEntity().getId()))
+                                .peerChatRoomId(chatRoomService.getPeerChatRoomIdInPost(post.getId(), user.getId(), post.getUserEntity().getId())).build()
+                ).build();
+
     }
 
     @Transactional
