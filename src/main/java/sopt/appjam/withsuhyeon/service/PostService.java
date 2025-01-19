@@ -131,6 +131,27 @@ public class PostService {
         return PostListResponseDto.of(userEntity.getRegion().getSubLocation(), days, postResponseList);
     }
 
+    @Transactional
+    public void removePostItem(final Long userId, final Long postId) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_FOUND));
+
+        PostEntity postEntity = postRepository.findById(postId)
+                .orElseThrow(() -> BaseException.type(PostErrorCode.POST_NOT_FOUND));
+
+        // PostEntity가 UserEntity의 게시글인지 검증
+        if (!postEntity.getUserEntity().equals(userEntity)) {
+            throw new BaseException(PostErrorCode.POST_USER_FORBIDDEN);
+        }
+
+        // RequestEntity에서 해당 postId와 관련된 데이터를 삭제
+        List<RequestEntity> relatedRequests = requestRepository.findByPostEntity(postEntity);
+        if (!relatedRequests.isEmpty()) {
+            requestRepository.deleteAll(relatedRequests);
+        }
+
+        postRepository.delete(postEntity);
+    }
     private void validatePriceRange(Integer price) {
         if(price < 0 || price > 99999) {
             throw BaseException.type(PostErrorCode.POST_PRICE_INVALID_INPUT);
