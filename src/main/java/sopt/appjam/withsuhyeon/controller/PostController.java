@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sopt.appjam.withsuhyeon.anotation.UserId;
+import sopt.appjam.withsuhyeon.dto.home.res.HomePostsResponse;
 import sopt.appjam.withsuhyeon.dto.post.req.PostRequestDto;
 import sopt.appjam.withsuhyeon.dto.post.res.PostDetailResponse;
 import sopt.appjam.withsuhyeon.dto.post.res.PostListResponseDto;
@@ -12,11 +13,11 @@ import sopt.appjam.withsuhyeon.service.PostService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/posts")
+@RequestMapping("/api/v1")
 public class PostController {
     private final PostService postService;
 
-    @PostMapping("")
+    @PostMapping("/posts")
     public ResponseEntity<Void> createPost(
             @UserId Long userId,
             @RequestBody PostRequestDto postRequestDto
@@ -25,7 +26,7 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("")
+    @GetMapping("/posts")
     public ResponseEntity<PostListResponseDto> getPosts(
             @UserId Long userId,
             @RequestParam(value = "region", required = false) String region,
@@ -35,7 +36,7 @@ public class PostController {
         return ResponseEntity.ok(postListResponseDto);
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDetailResponse> getPostDetail(
        @UserId long userId,
        @PathVariable(name = "postId") Long postId
@@ -43,12 +44,21 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostDetail(userId, postId));
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/posts/{postId}")
     public ResponseEntity<Void> deletePost(
             @UserId long userId,
             @PathVariable(name = "postId") Long postId
     ) {
         postService.removePostItem(userId, postId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/home")
+    public ResponseEntity<HomePostsResponse> getRandomPosts(
+            @UserId long userId
+    ) {
+        HomePostsResponse homePostsResponse = postService.getRandomPosts(userId);
+        return ResponseEntity.ok(homePostsResponse);
+
     }
 }

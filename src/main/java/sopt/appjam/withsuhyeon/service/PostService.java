@@ -9,6 +9,8 @@ import sopt.appjam.withsuhyeon.constant.RequestInfo;
 import sopt.appjam.withsuhyeon.domain.PostEntity;
 import sopt.appjam.withsuhyeon.domain.RequestEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
+import sopt.appjam.withsuhyeon.dto.home.res.HomePost;
+import sopt.appjam.withsuhyeon.dto.home.res.HomePostsResponse;
 import sopt.appjam.withsuhyeon.dto.post.req.PostRequestDto;
 import sopt.appjam.withsuhyeon.dto.post.res.ChatRoomInfoPost;
 import sopt.appjam.withsuhyeon.dto.post.res.PostDetailInfo;
@@ -36,6 +38,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final RequestRepository requestRepository;
+    private final UserRetriever userRetriever;
 
     public PostEntity createPostItem(final Long userId, final PostRequestDto postRequestDto) {
         UserEntity userEntity = userRepository.findById(userId)
@@ -176,6 +179,40 @@ public class PostService {
                                 .peerChatRoomId(chatRoomService.getPeerChatRoomIdInPost(post.getId(), user.getId(), post.getUserEntity().getId())).build()
                 ).build();
 
+    }
+
+    @Transactional(readOnly = true)
+    public HomePostsResponse getRandomPosts(final long userId) {
+        UserEntity userEntity = userRetriever.findByUserId(userId);
+
+        Integer matchingCount = 3212;
+        Region userRegion = userEntity.getRegion();
+
+        List<Long> allPostIds = postRepository.findIdsByRegion(userRegion);
+        Collections.shuffle(allPostIds);
+
+        List<Long> randomIds = allPostIds.stream()
+                .limit(3)
+                .collect(Collectors.toList());
+
+        //날짜 출력 format
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("M월 d일 (E) a h시 mm분", Locale.KOREAN);
+
+        // 주 활동 지역 내 게시글 조회
+        List<HomePost> randomPosts = postRepository.findByIdIn(randomIds)
+                .stream()
+                .map(post -> HomePost.of(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getPrice(),
+                        post.getAge().getValue(),
+                        post.getGender(),
+                        post.getDate().format(outputFormatter),
+                        post.getMatching()
+                ))
+                .collect(Collectors.toList());
+
+        return HomePostsResponse.of(matchingCount, userRegion.getSubLocation(), randomPosts);
     }
 
     @Transactional
