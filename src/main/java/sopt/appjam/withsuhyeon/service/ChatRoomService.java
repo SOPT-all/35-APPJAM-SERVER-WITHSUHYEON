@@ -21,7 +21,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository; // 코드 분리 필요
 
-    public String getChatRoomWithPostOwner(Long postId, Long ownerId, Long peerId) {
+    public String getOwnerChatRoomIdInPost(Long postId, Long ownerId, Long peerId) {
         // 양쪽 방향에서 ChatRoom을 검색
         Optional<ChatRoom> ownerChatRoom = chatRoomRepository.findByPostIdAndOwnerIdAndPeerId(postId, ownerId, peerId);
         Optional<ChatRoom> peerChatRoom = chatRoomRepository.findByPostIdAndOwnerIdAndPeerId(postId, peerId, ownerId);
@@ -37,7 +37,7 @@ public class ChatRoomService {
         }
     }
 
-    public String getChatRoomWithPostOpponent(Long postId, Long ownerId, Long peerId) {
+    public String getPeerChatRoomIdInPost(Long postId, Long ownerId, Long peerId) {
         // 양쪽 방향에서 ChatRoom을 검색
         Optional<ChatRoom> ownerChatRoom = chatRoomRepository.findByPostIdAndOwnerIdAndPeerId(postId, ownerId, peerId);
         Optional<ChatRoom> peerChatRoom = chatRoomRepository.findByPostIdAndOwnerIdAndPeerId(postId, peerId, ownerId);

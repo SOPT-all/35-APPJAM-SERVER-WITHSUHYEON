@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sopt.appjam.withsuhyeon.anotation.UserId;
 import sopt.appjam.withsuhyeon.dto.post.req.PostRequestDto;
+import sopt.appjam.withsuhyeon.dto.post.res.PostDetailResponse;
 import sopt.appjam.withsuhyeon.dto.post.res.PostListResponseDto;
 import sopt.appjam.withsuhyeon.service.PostService;
 
@@ -34,7 +35,15 @@ public class PostController {
         return ResponseEntity.ok(postListResponseDto);
     }
 
-    @DeleteMapping("{postId}")
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostDetailResponse> getPostDetail(
+       @UserId long userId,
+       @PathVariable(name = "postId") Long postId
+    ) {
+        return ResponseEntity.ok(postService.getPostDetail(userId, postId));
+    }
+
+    @DeleteMapping("/{postId}")
     public ResponseEntity<Void> deletePost(
             @UserId long userId,
             @PathVariable(name = "postId") Long postId
