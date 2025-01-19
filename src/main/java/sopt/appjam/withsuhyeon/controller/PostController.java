@@ -33,4 +33,13 @@ public class PostController {
         PostListResponseDto postListResponseDto = postService.getPostList(userId, region, date);
         return ResponseEntity.ok(postListResponseDto);
     }
+
+    @DeleteMapping("{postId}")
+    public ResponseEntity<Void> deletePost(
+            @UserId long userId,
+            @PathVariable(name = "postId") Long postId
+    ) {
+        postService.removePostItem(userId, postId);
+        return ResponseEntity.noContent().build();
+    }
 }
