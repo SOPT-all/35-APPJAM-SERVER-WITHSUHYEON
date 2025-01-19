@@ -3,8 +3,16 @@ package sopt.appjam.withsuhyeon.constant;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import sopt.appjam.withsuhyeon.dto.constant.res.Regions;
+import sopt.appjam.withsuhyeon.dto.constant.res.RegionsResponse;
 import sopt.appjam.withsuhyeon.exception.PostErrorCode;
 import sopt.appjam.withsuhyeon.global.exception.BaseException;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -88,4 +96,20 @@ public enum Region {
         }
         throw BaseException.type(PostErrorCode.POST_REGION_INVALID_INPUT);
     }
+
+    public static RegionsResponse generateRegionsResponse() {
+        Map<String, List<String>> groupedRegions = Arrays.stream(Region.values())
+                .collect(Collectors.groupingBy(
+                        Region::getLocation,
+                        LinkedHashMap::new,
+                        Collectors.mapping(Region::getSubLocation, Collectors.toList())
+                ));
+
+        List<Regions> regionsList = groupedRegions.entrySet().stream()
+                .map(entry -> new Regions(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+
+        return new RegionsResponse(regionsList);
+    }
+
 }
