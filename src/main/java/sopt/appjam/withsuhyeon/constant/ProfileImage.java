@@ -11,9 +11,10 @@ import sopt.appjam.withsuhyeon.global.exception.BaseException;
 @Slf4j
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ProfileImage {
-    IMAGE1("IMAGE_1", "image1"),
-    IMAGE2("IMAGE_2", "image2"),
-    IMAGE3("IMAGE_3", "image3");
+    PURPLE_SUMA("PURPLE_SUMA", "img_purple_suma"),
+    RED_SUMA("RED_SUMA", "img_red_suma"),
+    GREEN_SUMA("GREEN_SUMA", "img_green_suma"),
+    BLUE_SUMA("BLUE_SUMA", "img_blue_suma");
 
     private final String key;
     private final String value;
@@ -24,6 +25,6 @@ public enum ProfileImage {
                 return profileImage;
             }
         }
-        throw BaseException.type(ConstantErrorCode.NOT_FOUND_CATEGORY);
+        throw BaseException.type(ConstantErrorCode.NOT_FOUND_PROFILE_IMAGE);
     }
 }
