@@ -7,7 +7,6 @@ import java.util.List;
 
 @Builder
 public record GalleriesListResponse(
-    List<Categories> categories,
     List<GalleryResponse> galleries
 ) {
 }
