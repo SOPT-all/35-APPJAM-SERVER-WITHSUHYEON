@@ -3,6 +3,8 @@ package sopt.appjam.withsuhyeon.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sopt.appjam.withsuhyeon.constant.ProfileImage;
+import sopt.appjam.withsuhyeon.constant.Region;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
 import sopt.appjam.withsuhyeon.dto.auth.req.SignInRequestDto;
 import sopt.appjam.withsuhyeon.dto.auth.req.SignUpRequestDto;
@@ -23,8 +25,8 @@ public class AuthService {
                 .nickname(signUpRequestDto.nickname())
                 .birthYear(signUpRequestDto.birthYear())
                 .gender(signUpRequestDto.gender())
-                .profileImage(signUpRequestDto.profileImage())
-                .region(signUpRequestDto.region())
+                .profileImage(ProfileImage.from(signUpRequestDto.profileImage()))
+                .region(Region.fromValue(signUpRequestDto.region()))
                 .build();
 
         return userRepository.save(userEntity);
