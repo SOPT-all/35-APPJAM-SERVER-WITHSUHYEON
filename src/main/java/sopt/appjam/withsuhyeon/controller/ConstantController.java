@@ -24,6 +24,6 @@ public class ConstantController {
 
     @GetMapping("/categories")
     public ResponseEntity<CategoriesResponse> getCategories() {
-        return ResponseEntity.ok(Category.toCategoriesResponse(categoryImageProperties));
+        return ResponseEntity.ok(new CategoriesResponse(Category.toCategoriesResponse(categoryImageProperties)));
     }
 }

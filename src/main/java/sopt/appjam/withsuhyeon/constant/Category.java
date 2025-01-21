@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import sopt.appjam.withsuhyeon.config.CategoryImageProperties;
 import sopt.appjam.withsuhyeon.dto.constant.res.Categories;
-import sopt.appjam.withsuhyeon.dto.constant.res.CategoriesResponse;
 import sopt.appjam.withsuhyeon.exception.ConstantErrorCode;
 import sopt.appjam.withsuhyeon.global.exception.BaseException;
 
@@ -44,15 +43,13 @@ public enum Category {
         throw BaseException.type(ConstantErrorCode.NOT_FOUND_CATEGORY);
     }
 
-    public static CategoriesResponse toCategoriesResponse(CategoryImageProperties properties) {
-        List<Categories> categoriesList = List.of(Category.values())
+    public static List<Categories> toCategoriesResponse(CategoryImageProperties properties) {
+        return List.of(Category.values())
                 .stream()
                 .map(category -> new Categories(
                         properties.getImageUrl(category.getKey()),
                         category.getValue()
                 ))
                 .collect(Collectors.toList());
-
-        return new CategoriesResponse(categoriesList);
     }
 }
