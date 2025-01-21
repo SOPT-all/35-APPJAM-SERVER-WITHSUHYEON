@@ -1,6 +1,7 @@
 package sopt.appjam.withsuhyeon.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sopt.appjam.withsuhyeon.constant.Age;
@@ -79,7 +80,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponseDto getPostList(final Long userId, final String region, final String date) {
+    public PostListResponseDto getPostList(final Long userId, final List<Long> blockers, final String region, final String date) {
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_FOUND));
 
@@ -95,7 +96,7 @@ public class PostService {
         // 선택된 지역에 대한 게시글 리스트
         if(region != null) {
             Region selectedRegion = Region.fromValue(region);
-            postList = postRepository.findAllByRegion(selectedRegion);
+            postList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
             
             // 1. 지역과 날짜를 모두 선택하는 경우
             if(!date.equals("all")) {
@@ -107,13 +108,13 @@ public class PostService {
             }
             // 3. 날짜만 선택하는 경우
         } else if(!date.equals("all")) {
-            postList = postRepository.findAllByRegion(userEntity.getRegion());
+            postList = postRepository.findAllByRegionExcludingBlockedUsers(userEntity.getRegion(), blockers);
             LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
             filteredPostList = filterByDate(postList, parsedDate);
             
             // 4. 아무것도 선택하지 않는 경우
         } else {
-            filteredPostList = postRepository.findAllByRegion(userEntity.getRegion());
+            filteredPostList = postRepository.findAllByRegionExcludingBlockedUsers(userEntity.getRegion(), blockers);
         }
         
         //post 최신순 리스트
@@ -182,13 +183,13 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public HomePostsResponse getRandomPosts(final long userId) {
+    public HomePostsResponse getRandomPosts(final long userId, final List<Long> blockerIds) {
         UserEntity userEntity = userRetriever.findByUserId(userId);
 
         Integer matchingCount = 3212;
         Region userRegion = userEntity.getRegion();
 
-        List<Long> allPostIds = postRepository.findIdsByRegion(userRegion);
+        List<Long> allPostIds = postRepository.findIdsByRegionExcludingBlockedUsers(userRegion, blockerIds);
         Collections.shuffle(allPostIds);
 
         List<Long> randomIds = allPostIds.stream()
