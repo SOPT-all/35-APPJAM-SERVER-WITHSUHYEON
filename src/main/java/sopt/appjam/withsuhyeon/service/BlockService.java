@@ -1,7 +1,6 @@
 package sopt.appjam.withsuhyeon.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sopt.appjam.withsuhyeon.domain.BlockEntity;
@@ -18,12 +17,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BlockService {
     private final UserRepository userRepository;
     private final BlockRepository blockRepository;
+    private final UserRetriever userRetriever;
 
     @Transactional
     public BlockEntity createBlockNumber(final BlockNumberRequestDto blockNumberRequestDto, final Long blockerId) {
@@ -59,6 +58,18 @@ public class BlockService {
         Collections.reverse(phoneNumbers);
 
         return new BlockNumberListResponseDto(userEntity.getNickname(), phoneNumbers);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> getBlockerIds(final Long userId) {
+        UserEntity user = userRetriever.findByUserId(userId);
+        String blockPhoneNumber = user.getPhoneNumber();
+        List<Long> blockerIds = blockRepository.findUserIdsByPhoneNumber(blockPhoneNumber);
+        if (blockerIds.isEmpty()) {
+            throw BaseException.type(BlockErrorCode.BLOCKER_NOT_FOUND);
+        }
+
+        return blockerIds;
     }
 
     @Transactional
