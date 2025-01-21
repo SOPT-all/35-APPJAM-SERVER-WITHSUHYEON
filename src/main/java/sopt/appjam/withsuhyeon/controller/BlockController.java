@@ -34,7 +34,7 @@ public class BlockController {
     @DeleteMapping("/blocks")
     public ResponseEntity<Void> deleteBlockNumber(
             @UserId Long blockerId,
-            @RequestParam(value = "phoneNumber") String phoneNumber
+            @RequestParam(value = "number") String phoneNumber
     ) {
         blockService.removeBlockNumber(blockerId, phoneNumber);
         return ResponseEntity.noContent().build();
