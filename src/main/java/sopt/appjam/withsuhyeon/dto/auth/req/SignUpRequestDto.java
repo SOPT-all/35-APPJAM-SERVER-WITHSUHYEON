@@ -12,9 +12,9 @@ public record SignUpRequestDto(
 
         Boolean gender,
 
-        ProfileImage profileImage,
+        String profileImage,
 
-        Region region
+        String region
 ) {
 }
 
