@@ -89,12 +89,6 @@ public class GalleryService {
     public GalleriesListResponse getGalleriesWithCategory(
             String category
     ) {
-        ArrayList<Categories> categoriesArray = new ArrayList<>(Category.toCategoriesResponse(categoryImageProperties));
-        categoriesArray.add(
-                0,
-                new Categories("all", "전체")
-        );
-
         if(category.equals("all")) {
             List<GalleryResponse> galleries = galleryRepository.findAll().stream().map(
                     gallery -> GalleryResponse.builder()
@@ -103,9 +97,7 @@ public class GalleryService {
                             .title(gallery.getTitle()).build()
             ).toList();
 
-            return GalleriesListResponse.builder()
-                    .categories(categoriesArray)
-                    .galleries(galleries).build();
+            return new GalleriesListResponse(galleries);
         } else {
             Category categoryConstant = Category.from(category);
             List<GalleryResponse> galleries = galleryRepository.findAllByCategory(categoryConstant).stream().map(
@@ -115,9 +107,7 @@ public class GalleryService {
                             .title(gallery.getTitle()).build()
             ).toList();
 
-            return GalleriesListResponse.builder()
-                    .categories(categoriesArray)
-                    .galleries(galleries).build();
+            return new GalleriesListResponse(galleries);
         }
     }
 
