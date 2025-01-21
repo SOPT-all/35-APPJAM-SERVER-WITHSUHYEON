@@ -14,21 +14,20 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Category {
-    STUDY_CAFE("STUDY_CAFE", "스터디카페"),
     BEACH("BEACH", "바다"),
-    SCHOOL("SCHOOL", "학교"),
-    SKI_RESORT("SKI_RESORT", "스키장"),
-    MT("MT", "엠티"),
-    CAMPING_GLAMPING("CAMPING_GLAMPING", "캠핑/글램핑"),
-    SPA("SPA", "찜질방"),
-    COMPANY_DINNER("COMPANY_DINNER", "회식"),
     CAFE("CAFE", "카페"),
-    AIRPORT("AIRPORT", "공항"),
-    STUDY_ROOM("STUDY_ROOM", "자취방"),
-    CHURCH_RETREAT("CHURCH_RETREAT", "절/교회 수련회"),
-    OVERSEAS_TRAVEL("OVERSEAS_TRAVEL", "해외여행"),
+    SCHOOL("SCHOOL", "학교"),
     PARTY_ROOM("PARTY_ROOM", "파티룸"),
-    WATERPARK("WATERPARK", "워터파크"),
+    AIRPORT("AIRPORT", "공항"),
+    SKI_RESORT("SKI_RESORT", "스키장"),
+    CAMPING("CAMPING", "캠핑"),
+    COMPANY_DINNER("COMPANY_DINNER", "회식"),
+    POOL("POOL", "수영장"),
+    ROOM("ROOM", "자취방"),
+    MT("MT", "엠티"),
+    OVERSEAS_TRAVEL("OVERSEAS_TRAVEL", "해외여행"),
+    STUDY_CAFE("STUDY_CAFE", "도서관"),
+    SPA("SPA", "찜질방"),
     OTHERS("OTHERS", "기타");
 
     private final String key;
