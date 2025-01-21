@@ -12,11 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sopt.appjam.withsuhyeon.config.CategoryImageProperties;
-import sopt.appjam.withsuhyeon.config.S3Client;
+import sopt.appjam.withsuhyeon.config.S3Config;
 import sopt.appjam.withsuhyeon.constant.Category;
 import sopt.appjam.withsuhyeon.domain.GalleryEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
-import sopt.appjam.withsuhyeon.dto.constant.res.Categories;
 import sopt.appjam.withsuhyeon.dto.gallery.res.GalleriesListResponse;
 import sopt.appjam.withsuhyeon.dto.gallery.res.GalleryDetailResponse;
 import sopt.appjam.withsuhyeon.dto.gallery.res.GalleryResponse;
@@ -28,7 +27,6 @@ import sopt.appjam.withsuhyeon.util.FileConvertUtil;
 
 import java.io.File;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -40,7 +38,7 @@ public class GalleryService {
     @Value("${cloud.aws.s3.bucket}") private String bucketName;
     private final CategoryImageProperties categoryImageProperties;
     private final GalleryRepository galleryRepository;
-    private final S3Client s3Client;
+    private final S3Config s3Config;
 
     public GalleryEntity createGallery(
             final MultipartFile image,
@@ -49,7 +47,7 @@ public class GalleryService {
             final String content,
             final UserEntity user
     ) {
-        AmazonS3 s3 = s3Client.getAmazonS3();
+        AmazonS3 s3 = s3Config.getAmazonS3();
 
         UUID uuid = UUID.randomUUID();
         String imageName = uuid + "_" + image.getOriginalFilename();
