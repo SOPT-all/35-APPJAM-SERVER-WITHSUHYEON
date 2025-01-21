@@ -55,6 +55,10 @@ dependencies {
 
 	// Websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	//S3
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.549'
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
 }
 
 tasks.named('test') {
