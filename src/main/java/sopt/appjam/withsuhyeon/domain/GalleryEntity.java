@@ -20,6 +20,10 @@ public class GalleryEntity extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "upload_url", nullable = false)
+    @NotNull
+    private String uploadUrl;
+
     @Column(name = "image_url", nullable = false)
     @NotNull
     private String imageUrl;
@@ -44,12 +48,14 @@ public class GalleryEntity extends BaseTimeEntity {
 
     @Builder
     public GalleryEntity(
+            String uploadUrl,
             String imageUrl,
             String title,
             String content,
             Category category,
             UserEntity userEntity
     ) {
+        this.uploadUrl = uploadUrl;
         this.imageUrl = imageUrl;
         this.title = title;
         this.content = content;
