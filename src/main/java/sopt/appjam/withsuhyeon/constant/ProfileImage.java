@@ -11,10 +11,10 @@ import sopt.appjam.withsuhyeon.global.exception.BaseException;
 @Slf4j
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ProfileImage {
-    PURPLE_SUMA("PURPLE_SUMA", "img_purple_suma"),
-    RED_SUMA("RED_SUMA", "img_red_suma"),
-    GREEN_SUMA("GREEN_SUMA", "img_green_suma"),
-    BLUE_SUMA("BLUE_SUMA", "img_blue_suma");
+    IMAGE1("PURPLE_SUMA", "img_purple_suma"),
+    IMAGE2("RED_SUMA", "img_red_suma"),
+    IMAGE3("GREEN_SUMA", "img_green_suma"),
+    IMAGE4("BLUE_SUMA", "img_blue_suma");
 
     private final String key;
     private final String value;
