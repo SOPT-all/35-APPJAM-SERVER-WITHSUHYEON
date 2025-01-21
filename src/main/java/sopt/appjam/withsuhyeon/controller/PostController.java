@@ -8,14 +8,17 @@ import sopt.appjam.withsuhyeon.dto.home.res.HomePostsResponse;
 import sopt.appjam.withsuhyeon.dto.post.req.PostRequestDto;
 import sopt.appjam.withsuhyeon.dto.post.res.PostDetailResponse;
 import sopt.appjam.withsuhyeon.dto.post.res.PostListResponseDto;
+import sopt.appjam.withsuhyeon.service.BlockService;
 import sopt.appjam.withsuhyeon.service.PostService;
 
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class PostController {
     private final PostService postService;
+    private final BlockService blockService;
 
     @PostMapping("/posts")
     public ResponseEntity<Void> createPost(
@@ -29,17 +32,18 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<PostListResponseDto> getPosts(
             @UserId Long userId,
-            @RequestParam(value = "region", required = false) String region,
-            @RequestParam(value = "date", required = false, defaultValue = "all") String date
+            @RequestParam(value = "region") String region,
+            @RequestParam(value = "date", defaultValue = "all") String date
     ) {
-        PostListResponseDto postListResponseDto = postService.getPostList(userId, region, date);
+        List<Long> blockerIds = blockService.getBlockerIds(userId);
+        PostListResponseDto postListResponseDto = postService.getPostList(userId, blockerIds, region, date);
         return ResponseEntity.ok(postListResponseDto);
     }
 
     @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDetailResponse> getPostDetail(
-       @UserId long userId,
-       @PathVariable(name = "postId") Long postId
+            @UserId long userId,
+            @PathVariable(name = "postId") Long postId
     ) {
         return ResponseEntity.ok(postService.getPostDetail(userId, postId));
     }
@@ -57,7 +61,8 @@ public class PostController {
     public ResponseEntity<HomePostsResponse> getRandomPosts(
             @UserId long userId
     ) {
-        HomePostsResponse homePostsResponse = postService.getRandomPosts(userId);
+        List<Long> blockerIds = blockService.getBlockerIds(userId);
+        HomePostsResponse homePostsResponse = postService.getRandomPosts(userId, blockerIds);
         return ResponseEntity.ok(homePostsResponse);
 
     }
