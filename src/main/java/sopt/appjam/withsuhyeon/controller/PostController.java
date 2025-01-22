@@ -33,7 +33,7 @@ public class PostController {
     public ResponseEntity<PostListResponseDto> getPosts(
             @UserId Long userId,
             @RequestParam(value = "region", defaultValue = "my-region") String region,
-            @RequestParam(value = "date", defaultValue = "all") String date
+            @RequestParam(value = "date", defaultValue = "전체") String date
     ) {
         List<Long> blockerIds = blockService.getBlockerIds(userId);
         PostListResponseDto postListResponseDto = postService.getPostList(userId, blockerIds, region, date);

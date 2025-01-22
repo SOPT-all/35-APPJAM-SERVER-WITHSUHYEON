@@ -1,6 +1,7 @@
 package sopt.appjam.withsuhyeon.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sopt.appjam.withsuhyeon.constant.Age;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -87,12 +89,8 @@ public class PostService {
         //날짜 출력 format
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("M월 d일 (E) a h시 mm분", Locale.KOREAN);
 
-        //date format 변환(String -> LocalDate)
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         //post 조건별 조회
-        List<PostEntity> postList;
-        List<PostEntity> filteredPostList = new ArrayList<>();
+        List<PostEntity> filteredPostList;
 
         // 내 관심지역 여부 필터링
         Region selectedRegion;
@@ -115,8 +113,11 @@ public class PostService {
         }
 
         // 날짜 포매팅
-        if(!date.equals("all")) {
-            LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
+        if(!date.equals("전체")) {
+            // 요일 제거 및 파싱
+            int currentYear = LocalDate.now().getYear();
+            LocalDate parsedDate = LocalDate.parse(currentYear + "/" + date.split(" ")[0], DateTimeFormatter.ofPattern("yyyy/M/d"));
+            log.info(parsedDate.toString());
             filteredPostList = filterByDate(filteredPostList, parsedDate);
         }
 
