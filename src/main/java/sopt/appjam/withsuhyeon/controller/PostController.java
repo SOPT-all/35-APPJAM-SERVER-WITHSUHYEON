@@ -32,7 +32,7 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<PostListResponseDto> getPosts(
             @UserId Long userId,
-            @RequestParam(value = "region") String region,
+            @RequestParam(value = "region", defaultValue = "my-region") String region,
             @RequestParam(value = "date", defaultValue = "all") String date
     ) {
         List<Long> blockerIds = blockService.getBlockerIds(userId);

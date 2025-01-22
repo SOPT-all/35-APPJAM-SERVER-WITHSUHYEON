@@ -65,9 +65,6 @@ public class BlockService {
         UserEntity user = userRetriever.findByUserId(userId);
         String blockPhoneNumber = user.getPhoneNumber();
         List<Long> blockerIds = blockRepository.findUserIdsByPhoneNumber(blockPhoneNumber);
-        if (blockerIds.isEmpty()) {
-            throw BaseException.type(BlockErrorCode.BLOCKER_NOT_FOUND);
-        }
 
         return blockerIds;
     }
