@@ -14,10 +14,11 @@ public record PostListResponseDto(
             String age,
             Boolean gender,
             String date,
-            Boolean matching
+            Boolean matching,
+            Boolean isExpired
     ) {
-        public static PostResponse of(final Long postId, final String title, final Integer price, final String age, final Boolean gender, final String date, final Boolean matching) {
-            return new PostResponse(postId, title, price, age, gender, date, matching);
+        public static PostResponse of(final Long postId, final String title, final Integer price, final String age, final Boolean gender, final String date, final Boolean matching, final Boolean isExpired) {
+            return new PostResponse(postId, title, price, age, gender, date, matching, isExpired);
         }
      }
 

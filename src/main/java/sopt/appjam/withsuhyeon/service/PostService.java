@@ -24,6 +24,7 @@ import sopt.appjam.withsuhyeon.repository.RequestRepository;
 import sopt.appjam.withsuhyeon.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,7 +132,8 @@ public class PostService {
                         post.getAge().getValue(),
                         post.getGender(),
                         post.getDate().format(outputFormatter),
-                        post.getMatching()
+                        post.getMatching(),
+                        post.getDate().isBefore(LocalDateTime.now())
                 ))
                 .collect(Collectors.toList());
 
@@ -191,7 +193,7 @@ public class PostService {
         Integer matchingCount = 3212;
         Region userRegion = userEntity.getRegion();
 
-        List<Long> allPostIds = postRepository.findIdsByRegionExcludingBlockedUsers(userRegion, blockerIds);
+        List<Long> allPostIds = postRepository.findIdsByRegionExcludingBlockedUsersAndExpiredDate(userRegion, blockerIds);
         Collections.shuffle(allPostIds);
 
         List<Long> randomIds = allPostIds.stream()
