@@ -93,7 +93,7 @@ public class PostService {
         List<PostEntity> postList;
         List<PostEntity> filteredPostList = new ArrayList<>();
 
-        //지역 필터링
+        // 내 관심지역 여부 필터링
         Region selectedRegion;
         if(region.equals("my-region")) {
             selectedRegion = userEntity.getRegion();
@@ -101,53 +101,22 @@ public class PostService {
             selectedRegion = Region.fromValue(region);
         }
 
-        //날짜 필터링
-        LocalDate parsedDate = null;
-        if(!date.equals("all")) {
-            parsedDate = LocalDate.parse(date, inputFormatter);
-        }
-
-        //DB 조회
-        //List<PostEntity> filteredPostList = ;
-        if(date.equals("all")) {
-            //전체 날짜, selectedRegion으로 조회
-            filteredPostList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
+        // 전체지역 여부 필터링
+        if(Region.isAllRegion(region)) {
+            String city = Region.getCityFrom(selectedRegion);
+            // city 라는 문자열을 기반으로 해당하는 모든 post entity 를 가져오는 jpa
+            filteredPostList = postRepository.findAllByCityExcludingBlockedUsers(city, blockers);
         } else {
-            //선택 날짜, selectedRegion으로 조회
-            postList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
-            filteredPostList = filterByDate(postList, parsedDate);
-
-
+            filteredPostList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
         }
 
-//        // 선택된 지역에 대한 게시글 리스트
-//        if(!region.equals("my-region")) {
-//            selectedRegion = Region.fromValue(region);
-//            postList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
-//
-//            // 1. 지역과 날짜를 모두 선택하는 경우
-//            if(!date.equals("all")) {
-//                LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
-//                filteredPostList = filterByDate(postList, parsedDate);
-//            } else {
-//                // 2. 지역만 선택하는 경우
-//                filteredPostList = postList;
-//            }
-//            // 3. 날짜만 선택하는 경우
-//        } else if(!date.equals("all")) {
-//            selectedRegion = userEntity.getRegion();
-//            postList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
-//            LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
-//            filteredPostList = filterByDate(postList, parsedDate);
-//
-//            // 4. 아무것도 선택하지 않는 경우
-//        } else {
-//            selectedRegion = userEntity.getRegion();
-//            filteredPostList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
-//        }
+        // 날짜 포매팅
+        if(!date.equals("all")) {
+            LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
+            filteredPostList = filterByDate(filteredPostList, parsedDate);
+        }
 
         //post 최신순 리스트
-
         Collections.reverse(filteredPostList);
 
         List<PostListResponseDto.PostResponse> postResponseList = filteredPostList.stream()
