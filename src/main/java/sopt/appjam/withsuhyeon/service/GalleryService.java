@@ -27,9 +27,7 @@ import sopt.appjam.withsuhyeon.util.FileConvertUtil;
 
 import java.io.File;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -87,27 +85,34 @@ public class GalleryService {
     public GalleriesListResponse getGalleriesWithCategory(
             String category
     ) {
-        if(category.equals("all")) {
-            List<GalleryResponse> galleries = galleryRepository.findAll().stream().map(
-                    gallery -> GalleryResponse.builder()
-                            .galleryId(gallery.getId())
-                            .imageUrl(gallery.getImageUrl())
-                            .title(gallery.getTitle()).build()
-            ).toList();
+        if (category.equals("all")) {
+            List<GalleryResponse> galleries = new ArrayList<>( // Mutable list로 변환
+                    galleryRepository.findAll().stream()
+                            .map(gallery -> GalleryResponse.builder()
+                                    .galleryId(gallery.getId())
+                                    .imageUrl(gallery.getImageUrl())
+                                    .title(gallery.getTitle()).build())
+                            .toList()
+            );
+            Collections.reverse(galleries); // 역순 정렬
 
             return new GalleriesListResponse(galleries);
         } else {
             Category categoryConstant = Category.from(category);
-            List<GalleryResponse> galleries = galleryRepository.findAllByCategory(categoryConstant).stream().map(
-                    gallery -> GalleryResponse.builder()
-                            .galleryId(gallery.getId())
-                            .imageUrl(gallery.getImageUrl())
-                            .title(gallery.getTitle()).build()
-            ).toList();
+            List<GalleryResponse> galleries = new ArrayList<>( // Mutable list로 변환
+                    galleryRepository.findAllByCategory(categoryConstant).stream()
+                            .map(gallery -> GalleryResponse.builder()
+                                    .galleryId(gallery.getId())
+                                    .imageUrl(gallery.getImageUrl())
+                                    .title(gallery.getTitle()).build())
+                            .toList()
+            );
+            Collections.reverse(galleries); // 역순 정렬
 
             return new GalleriesListResponse(galleries);
         }
     }
+
 
     @Transactional(readOnly = true)
     public GalleryDetailResponse getGalleryDetail(

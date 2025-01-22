@@ -36,14 +36,14 @@ public class SMSMessageService {
         redisTemplate.opsForValue().set(
                 "cert:" + phoneNumber,
                 verificationCode,
-                Duration.ofMinutes(1) // 3분 TTL
+                Duration.ofMinutes(3) // 3분 TTL
         );
 
         // 3) 문자 보내기
         Message message = new Message();
         message.setFrom(senderPhoneNumber);
         message.setTo(phoneNumber);
-        message.setText("[테스트] 인증번호는 " + verificationCode + " 입니다. 1분 내로 입력해주세요.");
+        message.setText("[테스트] 인증번호는 " + verificationCode + " 입니다. 3분 내로 입력해주세요.");
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
     }
