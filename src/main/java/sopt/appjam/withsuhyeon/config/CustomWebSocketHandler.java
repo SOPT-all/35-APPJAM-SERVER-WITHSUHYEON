@@ -126,7 +126,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatResponse)
                             ));
                         } catch (Exception e) {
-                            log.error("힝 ㅠ");
+                            log.error("힝 ㅠ"); // 에러 로그 추가
                         }
                     } else {
                         // 케이스 1-2. 상대방이 채팅방에 들어와 있지 않을 때
@@ -152,12 +152,26 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatRoomsResponses)
                             ));
                         } catch (Exception e) {
-                            log.error("힝 ㅠㅠ");
+                            log.error("힝 ㅠㅠ"); // 에러 로그 추가
                         }
                     }
-
                 } else {
                     log.info("상대방이 세션에 없음");
+
+                    log.info("채팅 메세지 저장 시작");
+                    chatService.saveMessageRealTime(
+                            incomingMessage.senderId(),
+                            incomingMessage.receiverId(),
+                            incomingMessage.content(),
+                            incomingMessage.ownerChatRoomId(),
+                            incomingMessage.peerChatRoomId()
+                    );
+
+                    log.info("채팅 메세지 라스트 메시지 저장 시작");
+                    chatRoomInfoService.updateLastChat(
+                            incomingMessage.ownerChatRoomId(),
+                            incomingMessage.content()
+                    );
                 }
             }
         } catch (Exception e) {
