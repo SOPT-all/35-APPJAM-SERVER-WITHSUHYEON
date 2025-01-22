@@ -12,6 +12,7 @@ public record PostDetailResponse(
         Integer price,
         Boolean owner,
         Boolean matching,
+        Boolean isExpired,
         PostDetailInfo postDetailInfo,
         ChatRoomInfoPost chatRoomInfoPost
 ){
