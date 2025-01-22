@@ -75,8 +75,15 @@ jobs:
           username: root
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            sudo docker ps -q --filter "ancestor=${{ secrets.DOCKER_USERNAME }}/with-suhyeon" | xargs -r sudo docker stop
-            sudo docker ps -aq --filter "ancestor=${{ secrets.DOCKER_USERNAME }}/with-suhyeon" | xargs -r sudo docker rm
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/with-suhyeon
-            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/with-suhyeon
-            sudo docker image prune -f
+            cd /root/with-suhyeon   # docker-compose.yml 파일이 있는 폴더
+            # 1) 혹시 실행중인 컨테이너 있으면 종료
+            docker-compose down
+            
+            # 2) 최신 이미지 pull
+            docker-compose pull
+            
+            # 3) 백그라운드 실행
+            docker-compose up -d --remove-orphans
+            
+            # 4) 필요 시 사용 안 하는 이미지 정리
+            docker image prune -f

@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:7.2.7  # 원하시는 Redis 버전
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  with-suhyeon:
+    image: jang99u/with-suhyeon:latest
+    container_name: with-suhyeon
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
