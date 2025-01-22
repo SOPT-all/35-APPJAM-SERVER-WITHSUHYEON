@@ -125,7 +125,6 @@ public class PostService {
         Collections.reverse(filteredPostList);
 
         List<PostListResponseDto.PostResponse> postResponseList = filteredPostList.stream()
-                .filter(post -> post.getGender().equals(userEntity.getGender()))
                 .map(post -> PostListResponseDto.PostResponse.of(
                         post.getId(),
                         post.getTitle(),
