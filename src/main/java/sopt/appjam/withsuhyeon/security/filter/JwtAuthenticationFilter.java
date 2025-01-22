@@ -32,9 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         final String token = getJwtFromRequest(request);    //헤더에서 토큰 찾기
         if (StringUtils.hasText(token)) {   //토큰 있으면 토큰으로부터 유저 정보 가져오기
-            log.info("====================token: {}", token);
+            log.info("token 이렇게 들어왔어요 : {}", token);
             Claims claims = jwtUtil.getTokenBody(token);
-            log.info("====================claim: {}", claims);
+            log.info("claim 이렇게 들어왔어요 : {}", claims);
             Long userId = claims.get(AuthConstant.USER_ID_CLAIM_NAME, Long.class);
             UserAuthentication authentication = UserAuthentication.createUserAuthentication(userId); // 인증 객체 생성
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
