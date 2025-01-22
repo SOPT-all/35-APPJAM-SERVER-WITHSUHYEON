@@ -167,6 +167,7 @@ public class PostService {
                 .price(post.getPrice())
                 .owner(user.equals(post.getUserEntity()))
                 .matching(false) // 이후 리팩터링 필요
+                .isExpired(post.getDate().isBefore(LocalDateTime.now()))
                 .postDetailInfo(
                         PostDetailInfo.builder()
                                 .region(post.getRegion().getSubLocation())
