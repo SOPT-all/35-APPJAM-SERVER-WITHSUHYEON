@@ -16,11 +16,14 @@ import sopt.appjam.withsuhyeon.dto.chat.req.ChatRequest;
 import sopt.appjam.withsuhyeon.dto.chat.res.ChatCreateResponse;
 import sopt.appjam.withsuhyeon.dto.chat.res.ChatResponse;
 import sopt.appjam.withsuhyeon.dto.chat.res.ChatRoomsResponse;
+import sopt.appjam.withsuhyeon.repository.ChatRoomInfoRepository;
+import sopt.appjam.withsuhyeon.repository.ChatRoomRepository;
 import sopt.appjam.withsuhyeon.service.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -35,6 +38,8 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     private final ChatService chatService;
     private final ChatRoomService chatRoomService;
     private final ChatRoomInfoService chatRoomInfoService;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomInfoRepository chatRoomInfoRepository;
 
     // WebSocket 세션 관리
     private static final Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
@@ -182,8 +187,34 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         Long userId = getUserIdFromSession(session);
-
+        // 1. 현재 세션 목록에서 제거
         sessions.remove(userId);
+
+        // 2. DB에서 유저가 참여하고 있을 수 있는 모든 ChatRoom 조회
+        //    - 보통 ownerId = userId 이거나 peerId = userId 인 경우가 해당 유저가 관련된 방
+        //    - repository 메서드명과 쿼리는 상황에 맞춰 수정 필요
+        List<ChatRoom> chatRooms = chatRoomRepository.findByOwnerIdOrPeerId(userId, userId);
+
+        // 3. 조회된 각 ChatRoom에 대해, 해당 ChatRoomInfo(동일 roomNumber 사용)를 찾고 participatingUsers에서 제거
+        for (ChatRoom chatRoom : chatRooms) {
+            UUID roomNumber = chatRoom.getRoomNumber();
+            try {
+                ChatRoomInfo chatRoomInfo = chatRoomInfoRepository.findByRoomNumber(roomNumber)
+                        .orElseThrow();
+
+                if (chatRoomInfo != null) {
+                    // 만약 해당 유저가 참여중이면 제거
+                    if (chatRoomInfo.isUserParticipate(userId)) {
+                        chatRoomInfo.removeUser(userId);
+                        // 변경사항 반영
+                        chatRoomInfoRepository.save(chatRoomInfo);
+                    }
+                }
+            } catch (Exception e) {
+                log.error(e.toString());
+            }
+
+        }
     }
 
     private Long getUserIdFromSession(WebSocketSession session) {
