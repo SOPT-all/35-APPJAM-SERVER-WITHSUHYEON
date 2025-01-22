@@ -6,7 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import sopt.appjam.withsuhyeon.global.exception.BaseException;
+import sopt.appjam.withsuhyeon.global.base.BaseResponse;
+import sopt.appjam.withsuhyeon.global.exception.CustomErrorResponse;
 import sopt.appjam.withsuhyeon.global.exception.GlobalErrorCode;
 
 import java.io.IOException;
@@ -39,13 +40,22 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {  
     ) throws IOException {
         GlobalErrorCode errorCode = (GlobalErrorCode) request.getAttribute("exception");
         if (errorCode == null) {
-            errorCode = GlobalErrorCode.NOT_FOUND;
+            errorCode = GlobalErrorCode.UNAUTHORIZED;
         }
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setStatus(errorCode.getStatus().value());
+
+        // CustomErrorResponse
+        CustomErrorResponse cer = CustomErrorResponse.from(errorCode);
+
+        // BaseResponse.fail()
+        BaseResponse<?> baseResponse = BaseResponse.fail(cer);
+
+        // JSON 직렬화
         response.getWriter().write(
-                objectMapper.writeValueAsString(BaseException.type(GlobalErrorCode.UNAUTHORIZED))
+                objectMapper.writeValueAsString(baseResponse)
         );
     }
 
