@@ -69,7 +69,16 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
             UserEntity receiver = userRetriever.findByUserId(incomingMessage.receiverId());
 
             // 채팅방 생성이랑 메세지 전송 구분 : 채팅방 생성은 게시글 조회에서 이루어진다.
-            if (incomingMessage.type().equals("CREATE")) {
+            if(incomingMessage.type().equals("CREATE")) {
+
+                if(chatRoomRepository.existsByPostIdAndOwnerIdAndPeerId(
+                        incomingMessage.postId(),
+                        incomingMessage.senderId(),
+                        incomingMessage.receiverId()
+                )) {
+                    return; // 채팅방이 존재하는 경우 CREATE 는 잘못된 요청입니다.
+                }
+
                 // 소켓에 연결중인 유저의 세션을 가져옵니다.
                 WebSocketSession senderSession = sessions.get(incomingMessage.senderId());
                 WebSocketSession receiverSession = sessions.get(incomingMessage.receiverId());
@@ -101,7 +110,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                 } else {
                     log.info("상대방이 세션에 없음");
                 }
-            } else if (incomingMessage.type().equals("MESSAGE")) {
+            } else if(incomingMessage.type().equals("MESSAGE")) {
                 // 소켓에 연결중인 유저의 세션을 가져옵니다.
                 WebSocketSession receiverSession = sessions.get(incomingMessage.receiverId());
 
@@ -109,7 +118,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                 ChatRoomInfo chatRoomInfo = chatRoomInfoRetriever.findByRoomNumber(chatRoom.getRoomNumber());
 
                 // 상대방이 세션에 들어와 있을 때
-                if (receiverSession != null && receiverSession.isOpen()) {
+                if(receiverSession != null && receiverSession.isOpen()) {
                     log.info("상대방이 세션에 있음");
                     if (chatRoomInfo.getParticipatingUsers().contains(receiver.getId())) {
                         // 케이스 1-1. 상대방이 채팅방에 들어와 있을 때
