@@ -10,6 +10,8 @@ public class AuthConstant {
             "/api/v1/auth/signin",
             "/chat/**",
             "/api/v1/enums/regions",
+            "/api/v1/message/send",
+            "/api/v1/message/verify",
             "/api/v1/enums/categories" // WebSocket 경로 추가
     };
     private AuthConstant() {
