@@ -15,4 +15,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     List<Long> findIdsByRegionExcludingBlockedUsers(Region region, List<Long> blockerIds);
 
     List<PostEntity> findByIdIn(List<Long> ids);
+
+    @Query("SELECT p FROM PostEntity p WHERE p.city = :city AND p.userEntity.id NOT IN (:blockerIds)")
+    List<PostEntity> findAllByCityExcludingBlockedUsers(String city, List<Long> blockerIds);
 }

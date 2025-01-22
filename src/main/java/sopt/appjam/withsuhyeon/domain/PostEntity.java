@@ -32,6 +32,9 @@ public class PostEntity extends BaseTimeEntity {
     @NotNull(message = "나이대는 필수로 입력해야 합니다.")
     private Age age;
 
+    @Column(name = "city", nullable = false)
+    private String city;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
     @NotNull(message = "관심지역은 필수로 입력해야 합니다.")
@@ -75,6 +78,7 @@ public class PostEntity extends BaseTimeEntity {
     ) {
         this.gender = gender;
         this.age = age;
+        this.city = Region.getCityFrom(region);
         this.region = region;
         this.date = date;
         this.price = price;
