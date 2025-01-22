@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Region {
     // 전체
-    ALL("ALL", "전국", "전국전체"),
+    ALL("ALL", "전국", "전국 전체"),
 
     // 서울 지역
-    SEOUL_ALL("SEOUL_ALL", "서울", "서울전체"),
+    SEOUL_ALL("SEOUL_ALL", "서울", "서울 전체"),
     SEOUL_GANGNAM("SEOUL_GANGNAM", "서울", "강남/역삼/삼성"),
     SEOUL_SINSA("SEOUL_SINSA", "서울", "신사/청담/압구정"),
     SEOUL_SEOCHO("SEOUL_SEOCHO", "서울", "서초/교대/사당/동작"),
@@ -38,7 +38,7 @@ public enum Region {
     SEOUL_NOWON("SEOUL_NOWON", "서울", "성북/강북/노원/도봉/중랑"),
 
     // 부산 지역
-    BUSAN_ALL("BUSAN_ALL", "부산", "부산전체"),
+    BUSAN_ALL("BUSAN_ALL", "부산", "부산 전체"),
     BUSAN_HAEUNDAE("BUSAN_HAEUNDAE", "부산", "해운대/마린시티"),
     BUSAN_BEXCO("BUSAN_BEXCO", "부산", "벡스코/센텀시티"),
     BUSAN_SONGJEONG("BUSAN_SONGJEONG", "부산", "송정/기장/정관"),
@@ -51,7 +51,7 @@ public enum Region {
     BUSAN_SASANG("BUSAN_SASANG", "부산", "사상/강서/김해공항/하단"),
 
     // 제주 지역
-    JEEJU_ALL("JEEJU_ALL", "제주", "제주전체"),
+    JEEJU_ALL("JEEJU_ALL", "제주", "제주 전체"),
     JEJU_CITY("JEJU_CITY", "제주", "제주시청/제주국제공항"),
     JEJU_MOSULPO("JEJU_MOSULPO", "제주", "중문/모슬포"),
     JEJU_AEWOL("JEJU_AEWOL", "제주", "애월/한림/협재/한경"),
@@ -62,7 +62,7 @@ public enum Region {
     JEJU_CHUJADO("JEJU_CHUJADO", "제주", "추자도"),
 
     // 인천 지역
-    INCHEON_ALL("INCHEON_ALL", "인천", "인천전체"),
+    INCHEON_ALL("INCHEON_ALL", "인천", "인천 전체"),
     INCHEON_SONGDO("INCHEON_SONGDO", "인천", "송도/소래포구"),
     INCHEON_AIRPORT("INCHEON_AIRPORT", "인천", "인천국제공항/강화/을왕리"),
     INCHEON_YEONGJONG("INCHEON_YEONGJONG", "인천", "영종도/월미도/동구"),
@@ -70,7 +70,7 @@ public enum Region {
     INCHEON_BUPYEONG("INCHEON_BUPYEONG", "인천", "청라/계양/부평"),
 
     // 강원 지역
-    GANGWON_ALL("GANGWON_ALL", "강원", "강원전체"),
+    GANGWON_ALL("GANGWON_ALL", "강원", "강원 전체"),
     GANGWON_GANGNEUNG("GANGWON_GANGNEUNG", "강원", "강릉"),
     GANGWON_SOKCHO("GANGWON_SOKCHO", "강원", "속초/고성"),
     GANGWON_YANGYANG("GANGWON_YANGYANG", "강원", "양양(서피비치/낙산)"),
@@ -78,7 +78,7 @@ public enum Region {
     GANGWON_PYEONGCHANG("GANGWON_PYEONGCHANG", "강원", "평창/정선/영월"),
 
     // 경기도 지역
-    GYEONGGI_ALL("GYEONGGI_ALL", "경기", "경기전체"),
+    GYEONGGI_ALL("GYEONGGI_ALL", "경기", "경기 전체"),
     GYEONGGI_GAPYEONG("GYEONGGI_GAPYEONG", "경기", "가평/청평/양평"),
     GYEONGGI_SUWON("GYEONGGI_SUWON", "경기", "수원/화성/동탄"),
     GYEONGGI_GOYANG("GYEONGGI_GOYANG", "경기", "고양/파주/김포"),

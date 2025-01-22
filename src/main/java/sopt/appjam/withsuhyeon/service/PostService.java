@@ -103,9 +103,12 @@ public class PostService {
 
         // 전체지역 여부 필터링
         if(Region.isAllRegion(region)) {
-            String city = Region.getCityFrom(selectedRegion);
-            // city 라는 문자열을 기반으로 해당하는 모든 post entity 를 가져오는 jpa
-            filteredPostList = postRepository.findAllByCityExcludingBlockedUsers(city, blockers);
+            if(selectedRegion.equals(Region.ALL)) {
+                filteredPostList = postRepository.findAllExcludingBlockedUsers(blockers);
+            } else {
+                String city = Region.getCityFrom(selectedRegion);
+                filteredPostList = postRepository.findAllByCityExcludingBlockedUsers(city, blockers);
+            }
         } else {
             filteredPostList = postRepository.findAllByRegionExcludingBlockedUsers(selectedRegion, blockers);
         }
