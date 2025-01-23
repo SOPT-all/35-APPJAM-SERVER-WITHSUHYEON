@@ -84,7 +84,7 @@ public class BlockService {
 
     // 전화번호 형식 검증
     private void validatePhoneNumberFormat(String phoneNumber) {
-        String regex = "^01([0|1|6|7|8|9])\\d{3,4}\\d{4}$";
+        String regex = "^01([0|1|6|7|8|9])\\d{4}\\d{4}$";
         if (!phoneNumber.matches(regex)) {
             throw BaseException.type(BlockErrorCode.BLOCK_FORMAT_BAD_REQUEST);
         }
