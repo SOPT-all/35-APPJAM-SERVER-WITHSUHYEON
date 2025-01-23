@@ -153,6 +153,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatResponse)
                             ));
                         } catch (Exception e) {
+                            log.error("log info ==========",  e.toString());
                             log.error("힝 ㅠ"); // 에러 로그 추가
                         }
                     } else {
@@ -181,6 +182,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatRoomsResponses)
                             ));
                         } catch (Exception e) {
+                            log.error("log info ==========",  e.toString());
                             log.error("힝 ㅠㅠ"); // 에러 로그 추가
                         }
                     }
@@ -204,7 +206,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                 }
             }
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error("log info ==========",  e.toString());
         }
     }
 
