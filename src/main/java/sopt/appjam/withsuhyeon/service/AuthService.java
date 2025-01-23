@@ -9,6 +9,8 @@ import sopt.appjam.withsuhyeon.domain.UserEntity;
 import sopt.appjam.withsuhyeon.dto.auth.req.SignInRequestDto;
 import sopt.appjam.withsuhyeon.dto.auth.req.SignUpRequestDto;
 import sopt.appjam.withsuhyeon.dto.auth.res.JwtTokensDto;
+import sopt.appjam.withsuhyeon.exception.UserErrorCode;
+import sopt.appjam.withsuhyeon.global.exception.BaseException;
 import sopt.appjam.withsuhyeon.repository.UserRepository;
 import sopt.appjam.withsuhyeon.util.JwtUtil;
 
@@ -35,7 +37,7 @@ public class AuthService {
     @Transactional
     public JwtTokensDto login(SignInRequestDto signInRequestDto) {
         UserEntity user = userRepository.findUserEntityByPhoneNumber(signInRequestDto.phoneNumber())
-                .orElseThrow(); // 예외 상황 추가
+                .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_REGISTERED)); // 예외 상황 추가
 
         return jwtUtil.generateTokens(user.getId());
     }
