@@ -1,5 +1,6 @@
 package sopt.appjam.withsuhyeon.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class BlockController {
     @PostMapping("/blocks")
     public ResponseEntity<Void> createBlockNumber(
             @UserId Long blockerId,
-            @RequestBody BlockNumberRequestDto blockNumberRequestDto
+            @RequestBody @Valid BlockNumberRequestDto blockNumberRequestDto
     ) {
         blockService.createBlockNumber(blockNumberRequestDto, blockerId);
         return ResponseEntity.ok().build();

@@ -1,5 +1,6 @@
 package sopt.appjam.withsuhyeon.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signUp(
-            @RequestBody SignUpRequestDto signUpRequestDto
+            @RequestBody @Valid SignUpRequestDto signUpRequestDto
     ) {
         authService.signUp(signUpRequestDto);
 
@@ -25,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<JwtTokensDto> signIn(
-            @RequestBody SignInRequestDto signInRequestDto
+            @RequestBody @Valid SignInRequestDto signInRequestDto
     ) {
         return ResponseEntity.ok(authService.login(signInRequestDto));
     }
