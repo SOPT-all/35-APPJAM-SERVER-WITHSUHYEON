@@ -1,11 +1,9 @@
 package sopt.appjam.withsuhyeon.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import sopt.appjam.withsuhyeon.domain.ChatRoom;
 import sopt.appjam.withsuhyeon.domain.ChatRoomInfo;
-import sopt.appjam.withsuhyeon.dto.chat.req.ChatRequest;
 import sopt.appjam.withsuhyeon.repository.ChatMessageRepository;
 import sopt.appjam.withsuhyeon.repository.ChatRoomInfoRepository;
 import sopt.appjam.withsuhyeon.repository.ChatRoomRepository;
@@ -17,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ChatRoomSavor {
+public class ChatRoomSaver {
     private final UserRetriever userRetriever;
     private final ChatRoomInfoRetriever chatRoomInfoRetriever;
     private final ChatMessageSaver chatMessageSaver;
