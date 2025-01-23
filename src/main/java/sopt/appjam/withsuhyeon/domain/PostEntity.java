@@ -1,7 +1,7 @@
 package sopt.appjam.withsuhyeon.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,12 +24,12 @@ public class PostEntity extends BaseTimeEntity {
     private Long id;
 
     @Column(name = "gender", nullable = false)
-    @NotNull(message = "성별은 필수로 입력해야 합니다.")
+    @NotBlank(message = "성별은 필수로 입력해야 합니다.")
     private Boolean gender;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "age", nullable = false)
-    @NotNull(message = "나이대는 필수로 입력해야 합니다.")
+    @NotBlank(message = "나이대는 필수로 입력해야 합니다.")
     private Age age;
 
     @Column(name = "city", nullable = false)
@@ -37,23 +37,23 @@ public class PostEntity extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
-    @NotNull(message = "관심지역은 필수로 입력해야 합니다.")
+    @NotBlank(message = "관심지역은 필수로 입력해야 합니다.")
     private Region region;
 
     @Column(name = "date", nullable = false)
-    @NotNull(message = "날짜 및 시간은 필수로 입력해야 합니다.")
+    @NotBlank(message = "날짜 및 시간은 필수로 입력해야 합니다.")
     private LocalDateTime date;
 
     @Column(name = "price", nullable = false)
     private Integer price;
 
     @Column(name = "title", nullable = false)
-    @NotNull(message = "제목은 필수로 입력해야 합니다.")
+    @NotBlank(message = "제목은 필수로 입력해야 합니다.")
     @Length(max = 30)
     private String title;
 
     @Column(name = "content", nullable = false)
-    @NotNull(message = "설명은 필수로 입력해야 합니다.")
+    @NotBlank(message = "설명은 필수로 입력해야 합니다.")
     @Length(max = 200)
     private String content;
 
