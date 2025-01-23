@@ -1,5 +1,6 @@
 package sopt.appjam.withsuhyeon.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<Void> createPost(
             @UserId Long userId,
-            @RequestBody PostRequestDto postRequestDto
+            @RequestBody @Valid PostRequestDto postRequestDto
     ) {
         postService.createPostItem(userId, postRequestDto);
         return ResponseEntity.ok().build();
