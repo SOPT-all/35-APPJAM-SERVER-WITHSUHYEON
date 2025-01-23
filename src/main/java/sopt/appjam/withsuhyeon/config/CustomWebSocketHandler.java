@@ -47,6 +47,8 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         Long userId = getUserIdFromSession(session);
 
+        log.info("웹소켓 연결 성공입니다. 현재 연결된 userId ======== " + userId);
+
         sessions.put(userId, session);
     }
 
@@ -153,7 +155,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatResponse)
                             ));
                         } catch (Exception e) {
-                            log.error("log info ==========",  e.toString());
+                            log.error("log info ==========" + e);
                             log.error("힝 ㅠ"); // 에러 로그 추가
                         }
                     } else {
@@ -182,7 +184,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatRoomsResponses)
                             ));
                         } catch (Exception e) {
-                            log.error("log info ==========",  e.toString());
+                            log.error("log info ==========" + e);
                             log.error("힝 ㅠㅠ"); // 에러 로그 추가
                         }
                     }
@@ -206,13 +208,16 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                 }
             }
         } catch (Exception e) {
-            log.error("log info ==========",  e.toString());
+            log.error("log info ==========" + e);
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         Long userId = getUserIdFromSession(session);
+
+        log.info("웹소켓 연결 종료합니다. 현재 연결된 userId ======== " + userId);
+
         // 1. 현재 세션 목록에서 제거
         sessions.remove(userId);
 
