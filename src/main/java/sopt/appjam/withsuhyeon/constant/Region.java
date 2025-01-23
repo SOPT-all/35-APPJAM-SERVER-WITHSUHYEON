@@ -51,7 +51,7 @@ public enum Region {
     BUSAN_SASANG("BUSAN_SASANG", "부산", "사상/강서/김해공항/하단"),
 
     // 제주 지역
-    JEEJU_ALL("JEEJU_ALL", "제주", "제주 전체"),
+    JEJU_ALL("JEJU_ALL", "제주", "제주 전체"),
     JEJU_CITY("JEJU_CITY", "제주", "제주시청/제주국제공항"),
     JEJU_MOSULPO("JEJU_MOSULPO", "제주", "중문/모슬포"),
     JEJU_AEWOL("JEJU_AEWOL", "제주", "애월/한림/협재/한경"),
@@ -83,7 +83,41 @@ public enum Region {
     GYEONGGI_SUWON("GYEONGGI_SUWON", "경기", "수원/화성/동탄"),
     GYEONGGI_GOYANG("GYEONGGI_GOYANG", "경기", "고양/파주/김포"),
     GYEONGGI_UISUNG("GYEONGGI_UISUNG", "경기", "의정부/포천/동두천/양주"),
-    GYEONGGI_YONGIN("GYEONGGI_YONGIN", "경기", "용인");
+    GYEONGGI_YONGIN("GYEONGGI_YONGIN", "경기", "용인"),
+    GYEONGGI_OSAN("GYEONGGI_OSAN", "경기", "오산/평택/안성"),
+    GYEONGGI_NAMYANGJU("GYEONGGI_NAMYANGJU", "경기", "남양주/구리/성남/분당"),
+    GYEONGGI_ICHEON("GYEONGGI_ICHEON", "경기", "이천/광주/여주/하남"),
+    GYEONGGI_BUCHEON("GYEONGGI_BUCHEON", "경기", "부천/광명/시흥/안산"),
+    GYEONGGI_ANYANG("GYEONGGI_ANYANG", "경기", "안양/의왕/군포/과천"),
+
+    // 경상 지역 추가
+    GYEONGSANG_DAEGU("GYEONGSANG_DAEGU", "경상", "대구/구미/안동/문경"),
+    GYEONGSANG_GEOCHANG("GYEONGSANG_GEOCHANG", "경상", "거창/함양/합천/산청/의령/창녕/함안"),
+    GYEONGSANG_GYEONGJU("GYEONGSANG_GYEONGJU", "경상", "경주"),
+    GYEONGSANG_ULSAN("GYEONGSANG_ULSAN", "경상", "울산/양산/밀양"),
+    GYEONGSANG_GEOJE("GYEONGSANG_GEOJE", "경상", "거제/통영"),
+    GYEONGSANG_POHANG("GYEONGSANG_POHANG", "경상", "포항/영덕/울진/청송"),
+    GYEONGSANG_CHANGWON("GYEONGSANG_CHANGWON", "경상", "창원/마산/진해/김해/부곡"),
+    GYEONGSANG_NAMHAE("GYEONGSANG_NAMHAE", "경상", "남해/사천/하동/진주"),
+
+    // 전라 지역 추가
+    JEOLLA_JEONJU("JEOLLA_JEONJU", "전라", "전주/완주"),
+    JEOLLA_GWANGJU("JEOLLA_GWANGJU", "전라", "광주/나주/함평"),
+    JEOLLA_YEOSU("JEOLLA_YEOSU", "전라", "여수"),
+    JEOLLA_SUNCHEON("JEOLLA_SUNCHEON", "전라", "순천/광양/담양/보성/화순/곡성/구례"),
+    JEOLLA_BUAN("JEOLLA_BUAN", "전라", "부안/정읍/고창/김제"),
+    JEOLLA_MUJU("JEOLLA_MUJU", "전라", "무주/남원/장수/진안/임실/순창"),
+    JEOLLA_GUNSAN("JEOLLA_GUNSAN", "전라", "군산/익산"),
+    JEOLLA_MOKPO("JEOLLA_MOKPO", "전라", "목포/완도/고흥/신안"),
+
+    // 충청 지역 추가
+    CHUNGCHEONG_DAEJEON("CHUNGCHEONG_DAEJEON", "충청", "대전/세종"),
+    CHUNGCHEONG_CHEONAN("CHUNGCHEONG_CHEONAN", "충청", "천안/아산/도고"),
+    CHUNGCHEONG_DANGJIN("CHUNGCHEONG_DANGJIN", "충청", "당진/덕산/태안/서산/안면도/홍성"),
+    CHUNGCHEONG_GONGJU("CHUNGCHEONG_GONGJU", "충청", "공주/보령/부여/금산"),
+    CHUNGCHEONG_CHEONGJU("CHUNGCHEONG_CHEONGJU", "충청", "청주/보은/옥천"),
+    CHUNGCHEONG_CHUNGJU("CHUNGCHEONG_CHUNGJU", "충청", "충주/제천/단양");
+
 
     private final String key;
     private final String location;  // 도/특별시
