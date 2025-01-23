@@ -3,7 +3,6 @@ package sopt.appjam.withsuhyeon.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -34,7 +33,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     private final UserRetriever userRetriever;
     private final ChatRoomRetriever chatRoomRetriever;
     private final ChatRoomInfoRetriever chatRoomInfoRetriever;
-    private final ChatRoomSavor chatRoomSavor;
+    private final ChatRoomSaver chatRoomSaver;
     private final ChatService chatService;
     private final ChatRoomService chatRoomService;
     private final ChatRoomInfoService chatRoomInfoService;
@@ -84,7 +83,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                 WebSocketSession receiverSession = sessions.get(incomingMessage.receiverId());
 
                 // 채팅방 생성
-                List<String> newChatRooms = chatRoomSavor.createChatRoom(
+                List<String> newChatRooms = chatRoomSaver.createChatRoom(
                         incomingMessage.postId(),
                         incomingMessage.senderId(),
                         incomingMessage.receiverId(),

@@ -1,7 +1,7 @@
 package sopt.appjam.withsuhyeon.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,15 +21,15 @@ public class GalleryEntity extends BaseTimeEntity {
     private Long id;
 
     @Column(name = "upload_url", nullable = false)
-    @NotNull
+    @NotBlank
     private String uploadUrl;
 
     @Column(name = "image_url", nullable = false)
-    @NotNull
+    @NotBlank
     private String imageUrl;
 
     @Column(name = "title", nullable = false)
-    @NotNull(message = "제목은 필수로 입력해야 합니다.")
+    @NotBlank(message = "제목은 필수로 입력해야 합니다.")
     @Size(max = 30)
     private String title;
 
@@ -39,7 +39,7 @@ public class GalleryEntity extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
-    @NotNull(message = "카테고리는 필수로 입력해야 합니다.")
+    @NotBlank(message = "카테고리는 필수로 입력해야 합니다.")
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
