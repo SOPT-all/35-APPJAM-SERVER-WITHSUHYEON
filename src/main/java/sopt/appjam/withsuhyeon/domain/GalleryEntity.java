@@ -20,11 +20,11 @@ public class GalleryEntity extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "upload_url", nullable = false)
+    @Column(name = "upload_url", nullable = false, length = 1000)
     @NotBlank
     private String uploadUrl;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url", nullable = false, length = 1000)
     @NotBlank
     private String imageUrl;
 
