@@ -13,6 +13,7 @@ public record ChatRoomResponse(
         Long chatOwnerId,
         Long chatPeerId,
         String chatPeerNickname,
+        String chatPeerProfileImage,
         String lastChatMessage,
         LocalDateTime lastChatAt,
         Long unReadCount

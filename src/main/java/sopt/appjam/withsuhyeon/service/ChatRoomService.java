@@ -65,6 +65,7 @@ public class ChatRoomService {
                         .chatOwnerId(userId)
                         .chatPeerId(chatRoom.getPeerId())
                         .chatPeerNickname(userRetriever.findByUserId(chatRoom.getPeerId()).getNickname())
+                        .chatPeerProfileImage(userRetriever.findByUserId(chatRoom.getPeerId()).getProfileImage().getValue())
                         .lastChatMessage(chatRoomInfoRetriever.findByRoomNumber(chatRoom.getRoomNumber()).getLastMessage())
                         .lastChatAt(chatRoomInfoRetriever.findByRoomNumber(chatRoom.getRoomNumber()).getLastChatAt())
                         .unReadCount(chatMessageRepository.countByChatRoomIdAndIsRead(chatRoom.getId(), false))
