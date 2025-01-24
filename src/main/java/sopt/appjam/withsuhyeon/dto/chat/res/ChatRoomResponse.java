@@ -16,6 +16,9 @@ public record ChatRoomResponse(
         String chatPeerProfileImage,
         String lastChatMessage,
         LocalDateTime lastChatAt,
-        Long unReadCount
+        Long unReadCount,
+        String postTitle,
+        String postPlace,
+        String postCost
 ) {
 }

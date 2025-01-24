@@ -6,8 +6,11 @@ import sopt.appjam.withsuhyeon.domain.ChatRoom;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
 import sopt.appjam.withsuhyeon.dto.chat.res.ChatRoomResponse;
 import sopt.appjam.withsuhyeon.dto.chat.res.ChatRoomsResponse;
+import sopt.appjam.withsuhyeon.exception.PostErrorCode;
+import sopt.appjam.withsuhyeon.global.exception.BaseException;
 import sopt.appjam.withsuhyeon.repository.ChatMessageRepository;
 import sopt.appjam.withsuhyeon.repository.ChatRoomRepository;
+import sopt.appjam.withsuhyeon.repository.PostRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +23,7 @@ public class ChatRoomService {
     private final ChatRoomInfoRetriever chatRoomInfoRetriever;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository; // 코드 분리 필요
+    private final PostRepository postRepository;
 
     public String getOwnerChatRoomIdInPost(Long postId, Long ownerId, Long peerId) {
         // 양쪽 방향에서 ChatRoom을 검색
@@ -69,6 +73,9 @@ public class ChatRoomService {
                         .lastChatMessage(chatRoomInfoRetriever.findByRoomNumber(chatRoom.getRoomNumber()).getLastMessage())
                         .lastChatAt(chatRoomInfoRetriever.findByRoomNumber(chatRoom.getRoomNumber()).getLastChatAt())
                         .unReadCount(chatMessageRepository.countByChatRoomIdAndIsRead(chatRoom.getId(), false))
+                        .postTitle(postRepository.findById(chatRoom.getPostId()).orElseThrow(() -> BaseException.type(PostErrorCode.POST_NOT_FOUND)).getTitle())
+                        .postPlace(postRepository.findById(chatRoom.getPostId()).orElseThrow(() -> BaseException.type(PostErrorCode.POST_NOT_FOUND)).getRegion().getSubLocation())
+                        .postCost(postRepository.findById(chatRoom.getPostId()).orElseThrow(() -> BaseException.type(PostErrorCode.POST_NOT_FOUND)).getPrice().toString())
                         .build()
         ).sorted(Comparator.comparing(ChatRoomResponse::lastChatAt).reversed()).toList();
 
