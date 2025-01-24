@@ -19,7 +19,6 @@ public record PostRequestDto(
         @NotBlank(message = "게시글 작성 시 관심지역은 필수로 입력해야 합니다.")
         String region,
 
-        @NotBlank(message = "게시글 작성 시 날짜 및 시간은 필수로 입력해야 합니다.")
         LocalDateTime date,
 
         @PositiveOrZero
