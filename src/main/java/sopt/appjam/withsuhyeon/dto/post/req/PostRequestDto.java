@@ -15,7 +15,6 @@ public record PostRequestDto(
         @NotBlank(message = "게시글 작성 시 성별을 필수로 선택해야 합니다.")
         String age,
 
-        @NotBlank(message = "게시글 작성 시 요청 사항은 필수로 선택해야 합니다.")
         List<String> requests,
 
         @NotBlank(message = "게시글 작성 시 관심지역은 필수로 입력해야 합니다.")
