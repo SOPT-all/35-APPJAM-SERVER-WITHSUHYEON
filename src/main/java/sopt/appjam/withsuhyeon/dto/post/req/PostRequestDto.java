@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record PostRequestDto(
-        @NotBlank(message = "게시글 작성 시 성별을 필수로 선택해야 합니다.")
         Boolean gender,
 
         @NotBlank(message = "게시글 작성 시 성별을 필수로 선택해야 합니다.")
