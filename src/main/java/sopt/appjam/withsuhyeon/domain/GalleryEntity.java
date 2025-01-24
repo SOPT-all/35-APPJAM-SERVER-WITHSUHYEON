@@ -39,7 +39,6 @@ public class GalleryEntity extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
-    @NotBlank(message = "카테고리는 필수로 입력해야 합니다.")
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
