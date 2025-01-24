@@ -30,7 +30,7 @@ public class UserEntity {
     private String phoneNumber;
 
     @Column(name = "nickname", nullable = false)
-    @Pattern(regexp = "^[가-힣a-zA-Z0-9]{2,12}$", message = "한글, 영문, 숫자로 조합된 2 ~ 12자로 입력해야 합니다.")
+    @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{2,12}$", message = "한글(자음/모음 포함), 영문, 숫자로 조합된 2 ~ 12자로 입력해야 합니다.")
     @NotBlank(message = "닉네임은 필수로 입력해야 합니다.")
     @Size(min = 2, max = 12)
     private String nickname;
