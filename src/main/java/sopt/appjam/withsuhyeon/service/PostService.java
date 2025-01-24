@@ -219,7 +219,7 @@ public class PostService {
                 ))
                 .collect(Collectors.toList());
 
-        return HomePostsResponse.of(matchingCount, userRegion.getSubLocation(), randomPosts);
+        return HomePostsResponse.of(matchingCount, userRegion.getSubLocation(), userEntity.getNickname(), randomPosts);
     }
 
     @Transactional
