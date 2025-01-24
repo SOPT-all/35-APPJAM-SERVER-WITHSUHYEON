@@ -47,7 +47,14 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         Long userId = getUserIdFromSession(session);
 
+        if (sessions.containsKey(userId)) {
+            log.warn("이미 연결된 세션이 존재합니다. 새로운 연결을 거부합니다. userId: " + userId);
+            session.close();
+            return;
+        }
+
         log.info("웹소켓 연결 성공입니다. 현재 연결된 userId ======== " + userId);
+        log.info("현재 세션에 접속중인 유저 목록 ======== " + sessions.keySet());
 
         sessions.put(userId, session);
     }
@@ -58,12 +65,12 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
             // JSON 메시지 파싱
             ChatRequest incomingMessage = objectMapper.readValue(textMessage.getPayload(), ChatRequest.class);
 
-            log.info(incomingMessage.ownerChatRoomId().toString());
-            log.info(incomingMessage.peerChatRoomId().toString());
-            log.info(incomingMessage.receiverId().toString());
-            log.info(incomingMessage.content());
-            log.info(incomingMessage.type());
-            log.info(sessions.keySet().toString());
+            log.info("서버에서 클라이언트에게 JSON 메시지를 받았습니다.");
+            log.info("sender id ======== " + incomingMessage.senderId().toString());
+            log.info("receiver id ======== " + incomingMessage.receiverId().toString());
+            log.info("보내는 메시지 ======== " + incomingMessage.content());
+            log.info("메시지 타입 ======== " + incomingMessage.type());
+            log.info("현재 세션에 접속중인 유저 목록 ======== " + sessions.keySet());
 
             // sender 은 소켓 메시지를 보낸 사람, receiver 은 해당 메시지를 받은 사람.
             UserEntity sender = userRetriever.findByUserId(incomingMessage.senderId());
@@ -71,6 +78,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
             // 채팅방 생성이랑 메세지 전송 구분 : 채팅방 생성은 게시글 조회에서 이루어진다.
             if(incomingMessage.type().equals("CREATE")) {
+                log.info("메시지 타입이 CREATE ===> 채팅방 생성을 시작합니다.");
 
                 if(chatRoomRepository.existsByPostIdAndOwnerIdAndPeerId(
                         incomingMessage.postId(),
@@ -96,12 +104,12 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                 senderSession.sendMessage(new TextMessage(
                         objectMapper.writeValueAsString(new ChatCreateResponse(
                                 "CHAT_ROOM_CREATED",
-                                newChatRooms.get(0).toString(), // 생성된 내 채팅방 ID
-                                newChatRooms.get(1).toString() // 생성된 상대방 채팅방 ID
+                                newChatRooms.get(0), // 생성된 내 채팅방 ID
+                                newChatRooms.get(1) // 생성된 상대방 채팅방 ID
                         ))
                 ));
                 if(receiverSession != null && receiverSession.isOpen()) {
-                    log.info("상대방이 세션에 있음");
+                    log.info("채팅방 생성 ===> 상대방이 세션에 있음");
                     // 채팅방 생성 시 상대방은 채팅방에 들어와 있을 수가 없음
                     ChatRoomsResponse chatRoomsResponses = chatRoomService.getChatRooms(receiver.getId());
 
@@ -109,17 +117,10 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                             objectMapper.writeValueAsString(chatRoomsResponses)
                     ));
                 } else {
-                    log.info("상대방이 세션에 없음");
+                    log.info("채팅방 생성 ===> 상대방이 세션에 없음");
                 }
             } else if(incomingMessage.type().equals("MESSAGE")) {
                 log.info("=============== 채팅 메시지 전송 ===============");
-                log.info(incomingMessage.ownerChatRoomId().toString());
-                log.info(incomingMessage.peerChatRoomId().toString());
-                log.info(incomingMessage.receiverId().toString());
-                log.info(incomingMessage.content());
-                log.info(incomingMessage.type());
-                log.info(sessions.keySet().toString());
-                log.info("=============== 채팅 메시지 기본 정보 ===============");
                 // 소켓에 연결중인 유저의 세션을 가져옵니다.
                 WebSocketSession receiverSession = sessions.get(incomingMessage.receiverId());
 
@@ -128,7 +129,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
                 // 상대방이 세션에 들어와 있을 때
                 if(receiverSession != null && receiverSession.isOpen()) {
-                    log.info("상대방이 세션에 있음");
+                    log.info("채팅방 메시지 전송 ===> 상대방이 세션에 있음");
                     if (chatRoomInfo.getParticipatingUsers().contains(receiver.getId())) {
                         log.info("상대방이 채팅에 들어와 있음");
                         // 케이스 1-1. 상대방이 채팅방에 들어와 있을 때
@@ -155,11 +156,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatResponse)
                             ));
                         } catch (Exception e) {
+                            log.info("채팅방 메시지 전송 & 상대방이 세션에는 있고 채팅에 들어와 있음");
                             log.error("log info ==========" + e);
-                            log.error("힝 ㅠ"); // 에러 로그 추가
                         }
                     } else {
-                        log.info("상대방이 채팅에 들어와 있지 않음");
+                        log.info("채팅방 메시지 전송 ===> 상대방이 채팅에 들어와 있지 않음");
                         // 케이스 1-2. 상대방이 채팅방에 들어와 있지 않을 때
                         try {
                             log.info("채팅 메세지 저장 시작");
@@ -184,8 +185,8 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                                     objectMapper.writeValueAsString(chatRoomsResponses)
                             ));
                         } catch (Exception e) {
+                            log.info("채팅방 메시지 전송 & 상대방이 세션에는 있지만 채팅에는 들어와 있지 않음");
                             log.error("log info ==========" + e);
-                            log.error("힝 ㅠㅠ"); // 에러 로그 추가
                         }
                     }
                 } else {
