@@ -43,6 +43,7 @@ public class PostService {
     private final RequestRepository requestRepository;
     private final UserRetriever userRetriever;
 
+    @Transactional
     public PostEntity createPostItem(final Long userId, final PostRequestDto postRequestDto) {
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> BaseException.type(UserErrorCode.USER_NOT_FOUND));

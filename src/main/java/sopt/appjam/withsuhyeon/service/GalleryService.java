@@ -38,6 +38,7 @@ public class GalleryService {
     private final GalleryRepository galleryRepository;
     private final S3Config s3Config;
 
+    @Transactional
     public GalleryEntity createGallery(
             final MultipartFile image,
             final String category,
