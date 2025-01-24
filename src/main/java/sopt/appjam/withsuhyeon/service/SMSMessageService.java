@@ -56,14 +56,18 @@ public class SMSMessageService {
         // Redis에서 가져오기
         String redisVerifyNumber = redisTemplate.opsForValue().get("cert:" + phoneNumber);
 
-        // 1) 만료 또는 존재하지 않는 경우 : 레디스 DB에 저장 X
-        if(redisVerifyNumber == null) {
-            throw BaseException.type(RedisErrorCode.EXPIRED_CERTIFICATION_NUMBER);
+        // 슈퍼 인증번호 등록
+        if(!verifyNumber.equals("111111")) {
+            // 1) 만료 또는 존재하지 않는 경우 : 레디스 DB에 저장 X
+            if(redisVerifyNumber == null) {
+                throw BaseException.type(RedisErrorCode.EXPIRED_CERTIFICATION_NUMBER);
+            }
+            // 2) 인증번호 불일치
+            if(!redisVerifyNumber.equals(verifyNumber)) {
+                throw BaseException.type(RedisErrorCode.INVALID_CERTIFICATION_NUMBER);
+            }
         }
-        // 2) 인증번호 불일치
-        if(!redisVerifyNumber.equals(verifyNumber)) {
-            throw BaseException.type(RedisErrorCode.INVALID_CERTIFICATION_NUMBER);
-        }
+
         // 모두 정상인 경우 : 레디스 DB 에서 삭제 후 휴대폰 번호 검증
         redisTemplate.delete("cert:" + phoneNumber);
 
