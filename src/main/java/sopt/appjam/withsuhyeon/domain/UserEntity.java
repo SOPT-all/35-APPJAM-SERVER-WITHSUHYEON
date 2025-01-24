@@ -36,21 +36,17 @@ public class UserEntity {
     private String nickname;
 
     @Column(name = "birth_year", nullable = false)
-    @NotBlank(message = "출생연도는 필수로 입력해야 합니다.")
     private Integer birthYear;
 
     @Column(name = "gender", nullable = false, updatable = false)
-    @NotBlank(message = "성별은 필수로 입력해야 합니다.")
     private Boolean gender;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "image", nullable = false)
-    @NotBlank(message = "프로필 이미지는 필수로 입력해야 합니다.")
     private ProfileImage profileImage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
-    @NotBlank(message = "관심 지역은 필수로 입력해야 합니다.")
     private Region region;
 
     @Builder
