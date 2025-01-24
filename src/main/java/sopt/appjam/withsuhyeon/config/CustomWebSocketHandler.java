@@ -54,9 +54,8 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         }
 
         log.info("웹소켓 연결 성공입니다. 현재 연결된 userId ======== " + userId);
-        log.info("현재 세션에 접속중인 유저 목록 ======== " + sessions.keySet());
-
         sessions.put(userId, session);
+        log.info("현재 세션에 접속중인 유저 목록 ======== " + sessions.keySet());
     }
 
     @Override

@@ -261,6 +261,8 @@ public class PostService {
             LocalDate targetDate = today.plusDays(i);
             days.add(targetDate.format(filterDateFormatter));
         }
+        log.info("오늘의 날짜 보여주기 =========" + today.toString());
+
         return days;
     }
 
