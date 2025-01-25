@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sopt.appjam.withsuhyeon.constant.Age;
 import sopt.appjam.withsuhyeon.constant.Region;
 import sopt.appjam.withsuhyeon.constant.RequestInfo;
+import sopt.appjam.withsuhyeon.domain.ChatRoom;
 import sopt.appjam.withsuhyeon.domain.PostEntity;
 import sopt.appjam.withsuhyeon.domain.RequestEntity;
 import sopt.appjam.withsuhyeon.domain.UserEntity;
@@ -20,9 +21,7 @@ import sopt.appjam.withsuhyeon.dto.post.res.PostListResponseDto;
 import sopt.appjam.withsuhyeon.exception.PostErrorCode;
 import sopt.appjam.withsuhyeon.exception.UserErrorCode;
 import sopt.appjam.withsuhyeon.global.exception.BaseException;
-import sopt.appjam.withsuhyeon.repository.PostRepository;
-import sopt.appjam.withsuhyeon.repository.RequestRepository;
-import sopt.appjam.withsuhyeon.repository.UserRepository;
+import sopt.appjam.withsuhyeon.repository.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,6 +41,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final RequestRepository requestRepository;
     private final UserRetriever userRetriever;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomInfoRepository chatRoomInfoRepository;
 
     @Transactional
     public PostEntity createPostItem(final Long userId, final PostRequestDto postRequestDto) {
@@ -240,6 +241,17 @@ public class PostService {
         if (!relatedRequests.isEmpty()) {
             requestRepository.deleteAll(relatedRequests);
         }
+
+        // 관련된 ChatRoom 삭제
+        List<ChatRoom> chatRooms = chatRoomRepository.findAllByPostId(postId);
+        if (!chatRooms.isEmpty()) {
+            chatRooms.forEach(chatRoom -> {
+                // roomNumber 기준으로 ChatRoomInfo 삭제
+                chatRoomInfoRepository.deleteByRoomNumber(chatRoom.getRoomNumber());
+            });
+            chatRoomRepository.deleteAll(chatRooms); // ChatRoom 삭제
+        }
+
 
         postRepository.delete(postEntity);
     }
